@@ -19,9 +19,18 @@
                 <div class="flex justify-between items-center" style="gap: 12px;" v-if="isNavbarVisible">
                     <AppNavButton v-if="isUsersButtonVisible" title="Kullanıcılar" icon="ic:baseline-supervisor-account" />
                     <AppNavButton v-if="isGroupsButtonVisible" title="Topluluklar" icon="ic:baseline-groups" />
+                    <AppNavButton v-if="isCreateTitleButtonVisible" title="Başlık Oluştur" icon="bi:plus-circle" />
                     <div class="relative">
-                        <AppNavButton v-if="isGroupsButtonVisible" title="Hesap" icon="mdi:account" />
-                        <span class="absolute">Hello world</span>
+                        <AppNavButton @click="btnShowOrHideMenuOnClick()" v-if="isGroupsButtonVisible" title="Hesap" icon="mdi:account" />
+                        <AppMenu 
+                            v-if="isAccountMenuVisible" 
+                            class="absolute mt-2 right-0"
+                        >
+                            <div class="flex flex-col p-1">
+                                <AppMenuItem title="Giriş Yap" icon="bi:box-arrow-in-right" />
+                                <AppMenuItem title="Kayıt Ol" icon="bi:person-plus-fill" />
+                            </div>
+                        </AppMenu>
                     </div>
                 </div>
             </div>
@@ -46,6 +55,19 @@
     const isGroupsButtonVisible = computed(() => store.isGroupsButtonVisible);
     const isAccountButtonVisible = computed(() => store.isAccountButtonVisible);
     const isCreateTitleButtonVisible = computed(() => store.isCreateTitleButtonVisible);
+
+    let isAccountMenuVisible = computed({
+        get() {
+            return store.isAccountMenuVisible;
+        },
+        set(value) {
+            store.isAccountMenuVisible = value;
+        }
+    });
+
+    function btnShowOrHideMenuOnClick() {
+        isAccountMenuVisible.value = !isAccountMenuVisible.value;
+    }
 
 </script>
 

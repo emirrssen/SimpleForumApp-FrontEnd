@@ -1,5 +1,5 @@
 <template>
-    <div class="app-menu-item p-3 flex items-center justify-start">
+    <div class="app-menu-item px-2 py-1 flex items-center justify-start">
         <Icon :name="$props.icon" />
         <span>{{ $props.title }}</span>
     </div>
@@ -23,13 +23,15 @@
 <style scoped>
 
     .app-menu-item {
-        width: 100%;
-        background-color: rgb(251, 249, 241);
+        min-width: 120px;
+        background-color: transparent;
         gap: 8px;
+        user-select: none;
     }
 
     .app-menu-item:hover {
         background-color: rgb(232, 230, 223);
+        cursor: pointer;
     }
 
 </style>

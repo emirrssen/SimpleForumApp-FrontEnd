@@ -8,6 +8,8 @@ export const useLayoutStore = defineStore('layout', () => {
     const isAccountButtonVisible: Ref<boolean> = ref(false);
     const isCreateTitleButtonVisible: Ref<boolean> = ref(false);
 
+    const isAccountMenuVisible: Ref<boolean> = ref(false);
+
     function setDefaultLayout() {
         isNavbarVisible.value = true;
         isSelectFilterButtonVisible.value = true;
@@ -25,6 +27,7 @@ export const useLayoutStore = defineStore('layout', () => {
         isGroupsButtonVisible,
         isAccountButtonVisible,
         isCreateTitleButtonVisible,
+        isAccountMenuVisible,
         setDefaultLayout
     }
 })
