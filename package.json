@@ -13,6 +13,7 @@
     "@nuxt/icon": "^1.4.5",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.3",
+    "lodash": "^4.17.21",
     "nuxt": "^3.12.4",
     "pinia": "^2.2.2",
     "vue": "latest",
@@ -20,5 +21,8 @@
   },
   "overrides": {
     "vue": "latest"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.7"
   }
 }
