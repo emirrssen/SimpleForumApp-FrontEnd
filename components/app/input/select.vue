@@ -1,7 +1,7 @@
 <template>
     <div class="relative" style="width: 100%;">
         <div class="app-input-select flex flex-col relative">
-            <label class="text-lg font-normal" for="app-input-select-comp">{{ $props.label }}</label>
+            <label class="text-lg font-normal">{{ $props.label }}</label>
             <div class="flex items-center justify-center" style="gap: 8px; border-bottom: 1px solid black; padding-bottom: 3px;">
                 <input @input="searchOnInput()" @click="openMenuOnClick()" type="text" id="app-input-select-comp" :placeholder="$props.placeholder" v-model="searchText">
                 <Icon @click="clearOnClick()" v-if="searchText.length > 0" class="icon" name="ic:outline-close" />
