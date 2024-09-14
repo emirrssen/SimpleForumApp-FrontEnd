@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div tabindex="0">
         <div class="container mx-auto py-4 relative">
             <div class="columns-2 flex justify-between">
                 <div 
@@ -23,15 +23,16 @@
                     <AppNavButton v-if="isGroupsButtonVisible" title="Topluluklar" icon="ic:baseline-groups" />
                     <AppNavButton v-if="isCreateTitleButtonVisible" title="Başlık Oluştur" icon="bi:plus-circle" />
                     <div class="relative">
-                        <AppNavButton @click="btnShowOrHideMenuOnClick()" v-if="isGroupsButtonVisible" title="Hesap" icon="mdi:account" />
+                        <AppNavButton tabindex="0" @focus="btnShowMenuOnClick()" @blur="btnHideMenuOnClick" v-if="isGroupsButtonVisible" title="Hesap" icon="mdi:account" />
                         <AppMenu 
+                            tabindex="0"
                             v-if="isAccountMenuVisible" 
                             class="absolute mt-2 right-0"
                             minWidth="120px"
                         >
                             <div class="flex flex-col p-1">
                                 <AppMenuItem @click="navigateToLoginOnClick()" title="Giriş Yap" icon="bi:box-arrow-in-right" />
-                                <AppMenuItem title="Kayıt Ol" icon="bi:person-plus-fill" />
+                                <AppMenuItem @click="navigateToRegisterOnClick()" title="Kayıt Ol" icon="bi:person-plus-fill" />
                             </div>
                         </AppMenu>
                     </div>
@@ -63,8 +64,16 @@
         }
     });
 
-    function btnShowOrHideMenuOnClick() {
-        isAccountMenuVisible.value = !isAccountMenuVisible.value;
+    function btnShowMenuOnClick() {
+        isAccountMenuVisible.value = true;
+    }
+
+    function btnHideMenuOnClick(event: any) {
+        if (event.relatedTarget && event.relatedTarget.classList[0] === 'app-menu') {
+            return;
+        }
+
+        isAccountMenuVisible.value = false;
     }
 
     function navigateToHomeOnClick() {
@@ -73,6 +82,10 @@
 
     function navigateToLoginOnClick() {
         navigateTo("auth/login");
+    }
+
+    function navigateToRegisterOnClick() {
+        navigateTo("auth/register")
     }
 
 </script>

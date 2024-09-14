@@ -89,4 +89,8 @@ function ResponseHandler(response: any) {
     if (!response.isSuccess && response.code === 3) {
         toast.warning(response.message)
     }
+
+    if (!response.isSuccess && response.code === 2) {
+        toast.error(response.message);
+    }
 }

@@ -17,8 +17,8 @@
                         <AppInputSelect label="Ülke" placeholder="Seçiniz..." :items="countries" v-model="userToRegister.CountryId" />
                     </div>
                     <div class="columns-2 py-1">
-                        <AppInputSelect label="Cinsiyet" placeholder="Seçiniz..." :items="items" v-model="userToRegister.GenderId" />
-                        <AppInputText type="text" placeholder="05xx xxx xx xx" label="Telefon Numarası" v-model="userToRegister.PhoneNumber" />
+                        <AppInputSelect label="Cinsiyet" placeholder="Seçiniz..." :items="genders" v-model="userToRegister.GenderId" />
+                        <AppInputText type="text" placeholder="05xxxxxxxxx" label="Telefon Numarası" v-model="userToRegister.PhoneNumber" />
                     </div>
                     <div class="columns-2 py-1">
                         <AppInputText type="password" placeholder="Seçiniz..." label="Şifre" v-model="userToRegister.Password" />
@@ -27,7 +27,7 @@
                 </AppCardBody>
                 <AppCardFooter class="mt-4 flex justify-end" style="gap: 12px;">
                     <AppButton type="text" title="Giriş Yap" @click="navigateToLogin()" />
-                    <AppButton type="info" title="Kayıt Ol" />
+                    <AppButton type="info" title="Kayıt Ol" @click="loginOnClick()" />
                 </AppCardFooter>
             </template>
         </AppCard>
@@ -44,23 +44,10 @@
     const store = useRegisterStore();
     const layoutStore = useLayoutStore();
 
-    onBeforeMount(() => {
-        loadOnMounted();
-    })
-
     onMounted(() => {
         layoutStore.isNavbarVisible = false;
+        loadOnMounted();
     })
-
-    const items = [
-        { Id: 1, Title: "Test 1" },
-        { Id: 2, Title: "Test 2" },
-        { Id: 3, Title: "Test 3" },
-        { Id: 4, Title: "Test 4" },
-        { Id: 5, Title: "Test 5" },
-        { Id: 6, Title: "Test 6" },
-        { Id: 7, Title: "Test 7" },
-    ]
 
     const userToRegister = computed({
         get(): UserToRegister {
@@ -80,6 +67,15 @@
         }
     });
 
+    const genders = computed({
+        get(): SelectItem[] {
+            return store.genders;
+        },
+        set(value: SelectItem[]) {
+            store.genders = value;
+        }
+    })
+
     function navigateToLogin() {
         navigateTo('login')
     }
@@ -88,10 +84,15 @@
         layoutStore.isLoadingVisible = true;
 
         Promise.all([
-            store.getCountries()
+            store.getCountries(),
+            store.getGenders()
         ]).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
+    }
+
+    function loginOnClick() {
+        store.register();
     }
 
 </script>
