@@ -14,7 +14,7 @@
                     </div>
                     <div class="columns-2 py-1">
                         <AppInputDatePicker type="text" placeholder="Seçiniz..." label="Doğum Tarihi" v-model="userToRegister.DateOfBirth" />
-                        <AppInputSelect label="Ülke" placeholder="Seçiniz..." :items="items" v-model="userToRegister.CountryId" />
+                        <AppInputSelect label="Ülke" placeholder="Seçiniz..." :items="countries" v-model="userToRegister.CountryId" />
                     </div>
                     <div class="columns-2 py-1">
                         <AppInputSelect label="Cinsiyet" placeholder="Seçiniz..." :items="items" v-model="userToRegister.GenderId" />
@@ -26,7 +26,7 @@
                     </div>
                 </AppCardBody>
                 <AppCardFooter class="mt-4 flex justify-end" style="gap: 12px;">
-                    <AppButton type="text" title="Giriş Yap" />
+                    <AppButton type="text" title="Giriş Yap" @click="navigateToLogin()" />
                     <AppButton type="info" title="Kayıt Ol" />
                 </AppCardFooter>
             </template>
@@ -38,10 +38,15 @@
     import { useRegisterStore } from '~/stores/auth/register';
     import { useLayoutStore } from '~/stores/layout';
     
-    import { UserToRegister } from '~/services/auth/types';
+    import { UserToRegister } from '~/services/auth/register/types';
+    import { SelectItem } from '~/services/app/types';
 
     const store = useRegisterStore();
     const layoutStore = useLayoutStore();
+
+    onBeforeMount(() => {
+        loadOnMounted();
+    })
 
     onMounted(() => {
         layoutStore.isNavbarVisible = false;
@@ -66,7 +71,28 @@
         }
     })
 
-    
+    const countries = computed({
+        get(): SelectItem[] {
+            return store.countries
+        },
+        set(value: SelectItem[]) {
+            store.countries = value;
+        }
+    });
+
+    function navigateToLogin() {
+        navigateTo('login')
+    }
+
+    function loadOnMounted() {
+        layoutStore.isLoadingVisible = true;
+
+        Promise.all([
+            store.getCountries()
+        ]).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+    }
 
 </script>
 

@@ -1,17 +1,3 @@
-export class Token {
-    AccessToken: string = "";
-    ExpirationDate: string = "";
-    RefreshToken: string = "";
-
-    constructor(fields?: {
-        AccessToken: string,
-        ExpirationDate: string,
-        RefreshToken: string
-    }) {
-        Object.assign(this, fields)
-    }
-}
-
 export class UserToRegister {
     CountryId: number = 0;
     GenderId: number = 0;

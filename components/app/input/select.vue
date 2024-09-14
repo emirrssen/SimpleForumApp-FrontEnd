@@ -10,7 +10,7 @@
         </div>
         <AppMenu v-if="isMenuVisible" minWidth="261px" class="fixed flex flex-col mt-1 z-10" style="max-height: 200px; overflow-y: auto;">
             <AppMenuItem v-if="!items || (items && items.length === 0)" title="Veri Bulunamadı" style="width: 100%;" />
-            <AppMenuItem @click="selectOnClick(item.Id)" v-else v-for="item in items" :key="item.Id" :title="item.Title" style="width: 100%;" />
+            <AppMenuItem @click="selectOnClick(item.id)" v-else v-for="item in items" :key="item.id" :title="item.title" style="width: 100%;" />
         </AppMenu>
     </div>
 </template>
@@ -18,6 +18,7 @@
 <script lang="ts" setup>
     import { ref } from 'vue';
     import _ from "lodash";
+import type { SelectItem } from '~/services/app/types';
 
     const props = defineProps({
         label: {
@@ -29,7 +30,7 @@
             required: true
         },
         items: {
-            type: Array,
+            type: Array<SelectItem>,
             required: true
         },
         modelValue: {
@@ -64,14 +65,12 @@
             items.value = _.cloneDeep(props.items);
         }
 
-        items.value = _.cloneDeep(props.items.filter(x => x.Title.toLocaleLowerCase().includes(searchText.value.toLocaleLowerCase())))
+        items.value = _.cloneDeep(props.items.filter(x => x.title.toLocaleLowerCase().includes(searchText.value.toLocaleLowerCase())))
     }
 
     function selectOnClick(id: any) {
-        console.log(id);
-
-        const selectedValue = props.items.find(x => x.Id === id);
-        searchText.value = selectedValue?.Title
+        const selectedValue = props.items.find(x => x.id === id);
+        searchText.value = selectedValue?.title || ""
         isMenuVisible.value = false;
 
         emit('update:modelValue', id);

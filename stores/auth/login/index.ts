@@ -2,7 +2,7 @@ import { useToast } from "vue-toastification";
 
 import {
     LoginAsync
-} from "~/services/auth/index"
+} from "~/services/auth/login/index"
 
 export const useLoginStore = defineStore('login', () => {
     const toast = useToast();

@@ -2,7 +2,7 @@ import { useToast } from "vue-toastification";
 
 import {
     SendMailForPasswordResetAsync
-} from "~/services/auth/index"
+} from "~/services/auth/forgot-my-password/index"
 
 export const useForgotMyPasswordStore = defineStore('forgot-my-password', () => {
     const toast = useToast();

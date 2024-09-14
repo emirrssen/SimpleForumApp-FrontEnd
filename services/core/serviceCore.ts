@@ -86,7 +86,7 @@ export function Put<TResponse>(url: string, params?: {}, body?: {}): Promise<TRe
 }
 
 function ResponseHandler(response: any) {
-    if (!response.isSuccess) {
+    if (!response.isSuccess && response.code === 3) {
         toast.warning(response.message)
     }
 }
