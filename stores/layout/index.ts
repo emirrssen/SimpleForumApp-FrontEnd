@@ -1,4 +1,9 @@
+import { SetToken } from "~/services/core/localStoreageCore";
+import { useToast } from "vue-toastification";
+
 export const useLayoutStore = defineStore('layout', () => {
+
+    const toast = useToast();
 
     const isNavbarVisible: Ref<boolean> = ref(true);
     const isSelectFilterButtonVisible: Ref<boolean> = ref(true);
@@ -8,9 +13,20 @@ export const useLayoutStore = defineStore('layout', () => {
     const isAccountButtonVisible: Ref<boolean> = ref(true);
     const isCreateTitleButtonVisible: Ref<boolean> = ref(true);
     const isLoadingVisible: Ref<boolean> = ref(false);
+    const isAdminButtonVisible: Ref<boolean> = ref(true);
+    const isAccountMenuVisible: Ref<boolean> = ref(false);
+
     const isLoggedIn: Ref<boolean> = ref(false);
 
-    const isAccountMenuVisible: Ref<boolean> = ref(false);
+    function logOut() {
+        SetToken("").then(() => {
+            isLoggedIn.value = false;
+            isAccountMenuVisible.value = false;
+            navigateTo("");
+            toast.success("Çıkış Başarılı");
+        })
+    }
+
 
     return {
         isNavbarVisible,
@@ -22,6 +38,8 @@ export const useLayoutStore = defineStore('layout', () => {
         isCreateTitleButtonVisible,
         isAccountMenuVisible,
         isLoadingVisible,
-        isLoggedIn
+        isAdminButtonVisible,
+        isLoggedIn,
+        logOut
     }
 })

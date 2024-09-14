@@ -16,15 +16,15 @@
                 </div>
                 <div class="flex items-center" style="gap: 12px;" v-if="isNavbarVisible">
                     <AppNavButton v-if="isSelectFilterButtonVisible" title="Filtre Seç" icon="ic:outline-filter-alt" />
-                    <AppNavSearchBar />
+                    <AppNavSearchBar v-if="isSearchBarVisible" />
                 </div>
                 <div class="flex justify-between items-center" style="gap: 12px;" v-if="isNavbarVisible">
                     <AppNavButton v-if="isUsersButtonVisible" title="Kullanıcılar" icon="ic:baseline-supervisor-account" />
                     <AppNavButton v-if="isGroupsButtonVisible" title="Topluluklar" icon="ic:baseline-groups" />
                     <AppNavButton v-if="isCreateTitleButtonVisible" title="Başlık Oluştur" icon="bi:plus-circle" />
-                    <AppNavButton @click="navigateToAdminPanel" title="Admin Paneli" icon="bi:plus-circle" />
+                    <AppNavButton @click="navigateToAdminPanel" title="Admin Paneli" icon="bi:plus-circle" v-if="isAdminButtonVisible" />
                     <div class="relative">
-                        <AppNavButton tabindex="0" @focus="btnShowMenuOnClick()" @blur="btnHideMenuOnClick" v-if="isGroupsButtonVisible" title="Hesap" icon="mdi:account" />
+                        <AppNavButton tabindex="0" @focus="btnShowMenuOnClick()" @blur="btnHideMenuOnClick" v-if="isAccountButtonVisible" title="Hesap" icon="mdi:account" />
                         <AppMenu 
                             tabindex="0"
                             v-if="isAccountMenuVisible" 
@@ -40,7 +40,7 @@
                                 <AppMenuItem @click="" title="Başlıklarım" icon="material-symbols:format-align-left" />
                                 <AppMenuItem @click="" title="Hesabım" icon="material-symbols:person" />
                                 <AppMenuItem @click="" title="Ayarlar" icon="ic:baseline-settings" />
-                                <AppMenuItem @click="" title="Çıkış Yap" icon="material-symbols:logout" />
+                                <AppMenuItem @click="logOutOnClick" title="Çıkış Yap" icon="material-symbols:logout" />
                             </div>
                         </AppMenu>
                     </div>
@@ -71,6 +71,7 @@
     const isGroupsButtonVisible = computed(() => store.isGroupsButtonVisible);
     const isAccountButtonVisible = computed(() => store.isAccountButtonVisible);
     const isCreateTitleButtonVisible = computed(() => store.isCreateTitleButtonVisible);
+    const isAdminButtonVisible = computed(() => store.isAdminButtonVisible);
 
     let isAccountMenuVisible = computed({
         get() {
@@ -116,6 +117,10 @@
 
     function navigateToAdminPanel() {
         navigateTo("admin")
+    }
+
+    function logOutOnClick() {
+        store.logOut();
     }
 
 </script>
