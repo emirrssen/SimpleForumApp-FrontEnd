@@ -8,6 +8,7 @@ export const useLayoutStore = defineStore('layout', () => {
     const isAccountButtonVisible: Ref<boolean> = ref(true);
     const isCreateTitleButtonVisible: Ref<boolean> = ref(true);
     const isLoadingVisible: Ref<boolean> = ref(false);
+    const isLoggedIn: Ref<boolean> = ref(false);
 
     const isAccountMenuVisible: Ref<boolean> = ref(false);
 
@@ -20,6 +21,7 @@ export const useLayoutStore = defineStore('layout', () => {
         isAccountButtonVisible,
         isCreateTitleButtonVisible,
         isAccountMenuVisible,
-        isLoadingVisible
+        isLoadingVisible,
+        isLoggedIn
     }
 })

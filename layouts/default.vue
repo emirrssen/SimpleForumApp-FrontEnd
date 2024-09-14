@@ -22,6 +22,7 @@
                     <AppNavButton v-if="isUsersButtonVisible" title="Kullanıcılar" icon="ic:baseline-supervisor-account" />
                     <AppNavButton v-if="isGroupsButtonVisible" title="Topluluklar" icon="ic:baseline-groups" />
                     <AppNavButton v-if="isCreateTitleButtonVisible" title="Başlık Oluştur" icon="bi:plus-circle" />
+                    <AppNavButton @click="navigateToAdminPanel" title="Admin Paneli" icon="bi:plus-circle" />
                     <div class="relative">
                         <AppNavButton tabindex="0" @focus="btnShowMenuOnClick()" @blur="btnHideMenuOnClick" v-if="isGroupsButtonVisible" title="Hesap" icon="mdi:account" />
                         <AppMenu 
@@ -30,9 +31,16 @@
                             class="absolute mt-2 right-0"
                             minWidth="120px"
                         >
-                            <div class="flex flex-col p-1">
+                            <div class="flex flex-col p-1" v-if="!isLoggedIn">
                                 <AppMenuItem @click="navigateToLoginOnClick()" title="Giriş Yap" icon="bi:box-arrow-in-right" />
                                 <AppMenuItem @click="navigateToRegisterOnClick()" title="Kayıt Ol" icon="bi:person-plus-fill" />
+                            </div>
+                            <div class="flex flex-col p-1" v-else>
+                                <AppMenuItem @click="" title="Bildirimlerim" icon="material-symbols:notifications" />
+                                <AppMenuItem @click="" title="Başlıklarım" icon="material-symbols:format-align-left" />
+                                <AppMenuItem @click="" title="Hesabım" icon="material-symbols:person" />
+                                <AppMenuItem @click="" title="Ayarlar" icon="ic:baseline-settings" />
+                                <AppMenuItem @click="" title="Çıkış Yap" icon="material-symbols:logout" />
                             </div>
                         </AppMenu>
                     </div>
@@ -44,8 +52,17 @@
 
 <script lang="ts" setup>
     import { useLayoutStore } from '~/stores/layout';
+    import { GetToken } from '~/services/core/localStoreageCore';
 
     const store = useLayoutStore();
+
+    onMounted(() => {
+        GetToken().then((response => {
+            if (response) {
+                isLoggedIn.value = true;
+            }
+        }))
+    })
 
     const isNavbarVisible = computed(() => store.isNavbarVisible);
     const isSelectFilterButtonVisible = computed(() => store.isSelectFilterButtonVisible);
@@ -63,6 +80,15 @@
             store.isAccountMenuVisible = value;
         }
     });
+
+    const isLoggedIn = computed({
+        get(): boolean {
+            return store.isLoggedIn
+        },
+        set(value: boolean) {
+            store.isLoggedIn = value;
+        }
+    })
 
     function btnShowMenuOnClick() {
         isAccountMenuVisible.value = true;
@@ -86,6 +112,10 @@
 
     function navigateToRegisterOnClick() {
         navigateTo("auth/register")
+    }
+
+    function navigateToAdminPanel() {
+        navigateTo("admin")
     }
 
 </script>

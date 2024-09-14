@@ -1,6 +1,6 @@
 <template>
     <div class="app-menu-item px-2 py-1 flex items-center justify-start">
-        <Icon v-if="$props.icon" :name="$props.icon" />
+        <Icon size="20" v-if="$props.icon" :name="$props.icon" />
         <span>{{ $props.title }}</span>
     </div>
 </template>

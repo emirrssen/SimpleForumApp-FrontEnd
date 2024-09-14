@@ -56,7 +56,9 @@
     function loginOnClick() {
         layoutStore.isLoadingVisible = true;
 
-        loginStore.Login().finally(() => {
+        loginStore.Login().then(() => {
+            layoutStore.isLoggedIn = true;
+        }).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }
