@@ -4,12 +4,12 @@
             <div class="header-row">
                 <div :style="{ width: calculateWidth() }" v-for="header in $props.headers">{{ header.title }}</div>
             </div>
-            <div v-for="item in $props.items" class="data-row">
+            <div :class="{ selectable: $props.selectable }" v-for="item in $props.items" class="data-row" @click="selectOnClick(item)">
                 <div 
                     :style="{ width: calculateWidth() }" 
                     class="data-row-item" 
                     v-for="data in Object.keys(item)">
-                    {{ item[data] }}
+                    {{ $props.headers.some(x => x.field == data) ? item[data] : "" }}
                 </div>
             </div>
         </div>
@@ -28,15 +28,21 @@
         items: {
             type: Array<any>,
             required: true
+        },
+        selectable: {
+            type: Boolean,
+            required: true
         }
     })
 
-    function calculateWidth(): string {
-        const result = 100 / (Object.keys(props.headers).length) + "%";
-        console.log(result);
-        
+    const emit = defineEmits(['onSelected'])
 
-        return result;
+    function calculateWidth(): string {
+        return 100 / (Object.keys(props.headers).length) + "%";
+    }
+
+    function selectOnClick(item: any) {
+        emit('onSelected', item);
     }
 
 </script>
@@ -78,6 +84,10 @@
         display: flex;
         align-items: center;
         justify-content: start
+    }
+
+    .selectable:hover {
+        cursor: pointer;
     }
 
 </style>
