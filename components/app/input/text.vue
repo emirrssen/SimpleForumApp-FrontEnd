@@ -2,8 +2,8 @@
     <div class="app-input flex flex-col">
         <label class="text-lg font-normal" for="app-input-comp">{{ $props.label }}</label>
         <div class="flex items-center justify-center" style="gap: 8px; border-bottom: 1px solid black; padding-bottom: 3px;">
-            <input style="padding-bottom: 2px;" @input="updateValue" :type="inputType" id="app-input-comp" :placeholder="$props.placeholder" :value="$props.modelValue">
-            <Icon @click="clearOnClick()" v-if="$props.modelValue && $props.modelValue?.length > 0" class="icon" name="ic:outline-close" />
+            <input :readonly="$props.readonly" style="padding-bottom: 2px;" @input="updateValue" :type="inputType" id="app-input-comp" :placeholder="$props.placeholder" :value="$props.modelValue">
+            <Icon @click="clearOnClick()" v-if="$props.modelValue && $props.modelValue?.length > 0 && !$props.readonly" class="icon" name="ic:outline-close" />
             <Icon @click="changeVisibilityOfPasswordOnClick()" class="icon" v-if="$props.type === 'password'" :name="passwordVisibilityIcon" />
         </div>
     </div>
@@ -25,6 +25,9 @@
         type: {
             type: String,
             required: true
+        },
+        readonly: {
+            type: Boolean
         },
         modelValue: {
             type: String,
