@@ -47,7 +47,7 @@
 
     function openDialogOnClick() {
         detailsStore.currentRole = new Role();
-        layoutStore.isLoadingVisible = true;
+        detailsStore.isDialogVisible = true;
     }
 
     function selectRowOnClick(event: any) {
