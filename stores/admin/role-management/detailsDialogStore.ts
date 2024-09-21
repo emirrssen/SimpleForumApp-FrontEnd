@@ -8,7 +8,9 @@ import {
 } from "~/services/admin/role-management/types"
 
 import {
-    InsertAsync
+    InsertAsync,
+    UpdateByIdAsync,
+    GetByIdAsync
 } from "~/services/admin/role-management/index"
 
 export const useAdminRoleManagementDetailsDialogStore = defineStore('role-management-details-dialog', () => {
@@ -37,11 +39,34 @@ export const useAdminRoleManagementDetailsDialogStore = defineStore('role-manage
         }))
     }
 
+    function update(): Promise<boolean> {
+        return UpdateByIdAsync(currentRole.value).then((response => {
+            if (response.isSuccess) {
+                isDialogVisible.value = false;
+                toast.success(response.message)
+            }
+
+            return response.isSuccess;
+        }))
+    }
+
+    function getById(id: number): Promise<boolean> {
+        return GetByIdAsync(id).then((response => {
+            if (response.isSuccess && response.data) {
+                currentRole.value = response.data
+            }
+
+            return response.isSuccess;
+        }))
+    }
+
     return {
         isDialogVisible,
         statuses,
         currentRole,
         getStatuses,
-        insert
+        insert,
+        update,
+        getById
     }
 })

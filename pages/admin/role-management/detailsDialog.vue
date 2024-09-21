@@ -49,13 +49,23 @@
     const layoutStore = useLayoutStore();
     const roleManagemnetStore = useAdminRoleManagementStore();
 
+    onMounted(loadOnMounted)
+
     function closeDialogOnClick() {
         store.isDialogVisible = false;
     }
 
     function saveOnClick() {
         if (store.currentRole.id > 0) {
-            
+            layoutStore.isLoadingVisible = true;
+
+            store.update().then((response => {
+                if (response) {
+                    roleManagemnetStore.getRoles();
+                }
+            })).finally(() => {
+                layoutStore.isLoadingVisible = false;
+            })
         } else {
             layoutStore.isLoadingVisible = true;
 
@@ -67,6 +77,14 @@
                 layoutStore.isLoadingVisible = false;
             })
         }
+    }
+
+    function loadOnMounted() {
+        layoutStore.isLoadingVisible = true;
+
+        store.getStatuses().finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
     }
 
 </script>

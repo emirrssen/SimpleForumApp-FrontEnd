@@ -4,7 +4,7 @@
             <AppInputCheckBox v-model="isPassiveShown" label="Pasif Kayıtları Göster" />
             <AppButton @click="openDialogOnClick" title="Yeni Kayıt" type="success" />
         </div>
-        <AppTableData class="mb-2" :headers="headers" :items="store.roles" :selectable="false" />
+        <AppTableData class="mb-2" :headers="headers" :items="store.roles" @on-selected="selectRowOnClick" :selectable="true" />
         <DetailsDialog />
     </div>
 </template>
@@ -48,10 +48,16 @@
     function openDialogOnClick() {
         detailsStore.currentRole = new Role();
         layoutStore.isLoadingVisible = true;
+    }
 
-        detailsStore.getStatuses().then(() => {
-            detailsStore.isDialogVisible = true;
-        }).finally(() => {
+    function selectRowOnClick(event: any) {
+        layoutStore.isLoadingVisible = true;
+
+        detailsStore.getById(event.id).then((response => {
+            if (response) {
+                detailsStore.isDialogVisible = true;
+            }
+        })).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }
