@@ -33,6 +33,7 @@
     import { useLayoutStore } from '~/stores/layout';
     import { useAdminStore } from '~/stores/admin';
     import { useAdminUserManagementStore } from '~/stores/admin/user-management';
+    import { useAdminRoleManagementStore } from '~/stores/admin/role-management';
 
     import UserManagement from './user-management/index.vue';
     import RoleManagement from "./role-management/index.vue";
@@ -44,6 +45,7 @@
     const layoutStore = useLayoutStore();
     const adminStore = useAdminStore();
     const userManagementStore = useAdminUserManagementStore();
+    const roleManagementStore = useAdminRoleManagementStore();
 
     onMounted(() => {
         setLayoutOnMounted()
@@ -61,7 +63,13 @@
     }
 
     function setSelectedPageToRoleManagement() {
-        adminStore.selectedPage = SelectedAdminPage.RoleManagement;
+        layoutStore.isLoadingVisible = true;
+
+        roleManagementStore.getRoles().then(() => {
+            adminStore.selectedPage = SelectedAdminPage.RoleManagement;
+        }).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
     }
 
     function setLayoutOnMounted() {

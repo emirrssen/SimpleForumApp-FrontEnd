@@ -11,9 +11,11 @@ export const useAdminRoleManagementStore = defineStore('admin-role-management', 
     const roles: Ref<RoleToSelect[]> = ref([]);
 
     function getRoles(): Promise<void> {
-        return GetAllDetailsByStatusAsync(isPassiveShown ? 2 : 1).then((response => {
-            if (response.isSuccess) {
-                roles.value = response.data || []
+        return GetAllDetailsByStatusAsync(isPassiveShown.value ? 2 : 1).then((response => {
+            if (response.isSuccess && response.data) {
+                roles.value = response.data;
+            } else {
+                roles.value = [];
             }
         }))
     }

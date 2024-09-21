@@ -5,11 +5,12 @@
                 <div :style="{ width: calculateWidth() }" v-for="header in $props.headers">{{ header.title }}</div>
             </div>
             <div :class="{ selectable: $props.selectable }" v-for="item in $props.items" class="data-row" @click="selectOnClick(item)">
-                <div 
+                <div
                     :style="{ width: calculateWidth() }" 
                     class="data-row-item" 
-                    v-for="data in Object.keys(item)">
-                    {{ $props.headers.some(x => x.field == data) ? item[data] : "" }}
+                    v-for="data in $props.headers"
+                >
+                    {{ Object.keys(item).some(x => x === data.field) ? item[data.field] : "" }}
                 </div>
             </div>
         </div>

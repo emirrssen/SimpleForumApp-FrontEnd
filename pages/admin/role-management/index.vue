@@ -1,10 +1,11 @@
 <template>
     <div>
         <div class="flex justify-between align-center mb-4 ">
-            <AppInputCheckBox v-model="store.isPassiveShown" label="Pasif Kayıtları Göster" />
-            <AppButton @click="" title="Yeni Kayıt" type="success" />
+            <AppInputCheckBox v-model="isPassiveShown" label="Pasif Kayıtları Göster" />
+            <AppButton @click="openDialogOnClick" title="Yeni Kayıt" type="success" />
         </div>
         <AppTableData class="mb-2" :headers="headers" :items="store.roles" :selectable="false" />
+        <DetailsDialog />
     </div>
 </template>
 
@@ -12,26 +13,45 @@
 
     import { useAdminRoleManagementStore } from '~/stores/admin/role-management';
     import { useLayoutStore } from '~/stores/layout';
+    import { useAdminRoleManagementDetailsDialogStore } from '~/stores/admin/role-management/detailsDialogStore';
 
     import type { AppDataTableHeader } from '~/services/app/types';
 
-    onMounted(loadOnMounted)
+    import DetailsDialog from './detailsDialog.vue';
+    import { Role } from '~/services/admin/role-management/types';
 
     const store = useAdminRoleManagementStore();
     const layoutStore = useLayoutStore();
+    const detailsStore = useAdminRoleManagementDetailsDialogStore();
 
     const headers: AppDataTableHeader[] = [
         { title: "İsim", field: "name" },
-        { title: "Açıklama", field: "description" },
-        { title: "Durum", field: "statusName" }
+        { title: "Durum", field: "statusName" },
+        { title: "Açıklama", field: "description" }
     ]
-    
-    function loadOnMounted() {
+
+    const isPassiveShown = computed({
+        get(): boolean {
+            return store.isPassiveShown
+        },
+        set(value: boolean) {
+            store.isPassiveShown = value;
+
+            layoutStore.isLoadingVisible = true;
+
+            store.getRoles().finally(() => {
+                layoutStore.isLoadingVisible = false;
+            })
+        }
+    })
+
+    function openDialogOnClick() {
+        detailsStore.currentRole = new Role();
         layoutStore.isLoadingVisible = true;
 
-        Promise.all([
-            store.getRoles()
-        ]).finally(() => {
+        detailsStore.getStatuses().then(() => {
+            detailsStore.isDialogVisible = true;
+        }).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }
