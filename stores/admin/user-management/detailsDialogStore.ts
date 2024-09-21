@@ -15,7 +15,6 @@ import {
 import { GetStatusesAsync } from "~/services/admin/status-management/index"
 import { GetCountriesAsync } from "~/services/admin/country-management/index"
 import { GetGendersAsync } from "~/services/admin/gender-management";
-import { RegisterAsync } from "~/services/auth/register";
 
 export const useAdminUserManagementDetailsDialogStore = defineStore("user-management-details-dialog", () => {
 

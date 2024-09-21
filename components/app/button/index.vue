@@ -47,7 +47,7 @@
 
     .app-button {
         border: 1px solid transparent;
-        border-radius: 18px;
+        border-radius: 5px;
         user-select: none;
     }
 
