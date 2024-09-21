@@ -14,10 +14,10 @@
                     </div>
                     <div class="columns-2 py-1">
                         <AppInputDatePicker type="text" placeholder="Seçiniz..." label="Doğum Tarihi" v-model="userToRegister.DateOfBirth" />
-                        <AppInputSelect label="Ülke" placeholder="Seçiniz..." :items="countries" v-model="userToRegister.CountryId" />
+                        <AppInputSelect minWidth="261px" label="Ülke" placeholder="Seçiniz..." :items="countries" v-model="userToRegister.CountryId" />
                     </div>
                     <div class="columns-2 py-1">
-                        <AppInputSelect label="Cinsiyet" placeholder="Seçiniz..." :items="genders" v-model="userToRegister.GenderId" />
+                        <AppInputSelect minWidth="261px" label="Cinsiyet" placeholder="Seçiniz..." :items="genders" v-model="userToRegister.GenderId" />
                         <AppInputText type="text" placeholder="05xxxxxxxxx" label="Telefon Numarası" v-model="userToRegister.PhoneNumber" />
                     </div>
                     <div class="columns-2 py-1">

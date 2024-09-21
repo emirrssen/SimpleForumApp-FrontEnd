@@ -6,3 +6,12 @@ export class SelectItem {
         Object.assign(this, fields);
     }
 }
+
+export class AppDataTableHeader {
+    title: string = "";
+    field: string = "";
+
+    constructor(fields?: { title: string, field: string }) {
+        Object.assign(this, fields);
+    }
+}
