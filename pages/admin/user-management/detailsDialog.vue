@@ -6,26 +6,26 @@
                     <AppCardHeader>Kullanıcı Detayları</AppCardHeader>
                     <AppCardBody class="my-2 flex flex-col">
                         <div class="columns-2">
-                            <AppInputText label="Kullanıcı Adı" placeholder="Giriniz..." v-model="currentUser.userName" type="text" />
-                            <AppInputSelect minWidth="371px" label="Durumu" placeholder="Seçiniz..." v-model="currentUser.statusId" type="text" :items="statuses" />
+                            <AppInputText :readonly="currentUser.id > 0" label="Kullanıcı Adı" placeholder="Giriniz..." v-model="currentUser.userName" type="text" />
+                            <AppInputSelect itemText="title" itemValue="id" minWidth="371px" label="Durumu" placeholder="Seçiniz..." v-model="currentUser.statusId" type="text" :items="statuses" />
                         </div>
                         <div class="columns-2 pt-3">
-                            <AppInputSelect minWidth="371px" label="Cinsiyet" placeholder="Seçiniz..." v-model="currentUser.genderId" type="text" :items="genders" />
-                            <AppInputSelect minWidth="371px" label="Ülke" placeholder="Seçiniz..." v-model="currentUser.countryId" type="text" :items="countries" />
+                            <AppInputSelect itemText="title" itemValue="id" minWidth="371px" label="Cinsiyet" placeholder="Seçiniz..." v-model="currentUser.genderId" type="text" :items="genders" />
+                            <AppInputSelect itemText="title" itemValue="id" minWidth="371px" label="Ülke" placeholder="Seçiniz..." v-model="currentUser.countryId" type="text" :items="countries" />
                         </div>
                         <div class="columns-2 pt-3">
                             <AppInputText label="İsim" placeholder="Giriniz..." v-model="currentUser.firstName" type="text" />
                             <AppInputText label="Soyisim" placeholder="Giriniz..." v-model="currentUser.lastName" type="text" />
                         </div>
                         <div class="columns-3 pt-3">
-                            <AppInputText label="E-Posta Adresi" placeholder="Giriniz..." v-model="currentUser.email" type="text" />
-                            <AppInputText label="Telefon Numarası" placeholder="05xxxxxxxxx" v-model="currentUser.phoneNumber" type="text" />
+                            <AppInputText :readonly="currentUser.id > 0" label="E-Posta Adresi" placeholder="Giriniz..." v-model="currentUser.email" type="text" />
+                            <AppInputText :readonly="currentUser.id > 0" label="Telefon Numarası" placeholder="05xxxxxxxxx" v-model="currentUser.phoneNumber" type="text" />
                             <AppInputDatePicker label="Doğum Tarihi" placeholder="Giriniz..." v-model="currentUser.dateOfBirth" type="text" />
                         </div>
                     </AppCardBody>
                     <AppCardFooter class="flex justify-between align-center">
                         <AppButton @click="closeDialogOnClick" title="Kapat" type="text" />
-                        <AppButton title="Kaydet" type="info" />
+                        <AppButton @click="saveOnClick" title="Kaydet" type="info" />
                     </AppCardFooter>
                 </template>
             </AppCard>
@@ -37,12 +37,14 @@
 
     import { useAdminUserManagementDetailsDialogStore } from '~/stores/admin/user-management/detailsDialogStore';
     import { useLayoutStore } from '~/stores/layout';
+    import { useAdminUserManagementStore } from '~/stores/admin/user-management';
 
     import {
         UserDetails
     } from "~/services/admin/user-management/types"
 
     const store = useAdminUserManagementDetailsDialogStore();
+    const userManagementStore = useAdminUserManagementStore();
     const layoutStore = useLayoutStore();
 
     onMounted(() => {
@@ -73,6 +75,28 @@
 
     function closeDialogOnClick() {
         isDialogVisible.value = false;
+    }
+
+    function saveOnClick() {
+        layoutStore.isLoadingVisible = true;
+
+        if (currentUser.value.id > 0) {
+            store.updateById().then((response) => {
+                if (response) {
+                    userManagementStore.getUsersToList();
+                }
+            }).finally(() => {
+                layoutStore.isLoadingVisible = false;
+            })
+        } else {
+            store.insert().then((response => {
+                if (response) {
+                    userManagementStore.getUsersToList();
+                }
+            })).finally(() => {
+                layoutStore.isLoadingVisible = false;
+            })
+        }
     }
 
     function loadOnMounted() {

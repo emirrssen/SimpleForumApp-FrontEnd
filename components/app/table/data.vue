@@ -62,7 +62,7 @@
         align-items: center;
         justify-content: space-between;
         font-weight: 600;
-        border-bottom: 1px solid rgb(158, 156, 147);
+        border-bottom: 2px solid rgb(158, 156, 147);
         width: 100%;
         padding: 0 12px 8px 12px;
     }

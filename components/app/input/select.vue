@@ -10,7 +10,7 @@
         </div>
         <AppMenu tabindex="0" v-if="isMenuVisible" :minWidth="props.minWidth" class="fixed flex flex-col mt-1 z-10" style="max-height: 200px; overflow-y: auto;">
             <AppMenuItem v-if="!items || (items && items.length === 0)" title="Veri Bulunamadı" style="width: 100%;" />
-            <AppMenuItem @click="selectOnClick(item.id)" v-else v-for="item in items" :key="item.id" :title="item.title" style="width: 100%;" />
+            <AppMenuItem @click="selectOnClick(item[$props.itemValue])" v-else v-for="item in items" :key="item[$props.itemValue]" :title="item[$props.itemText]" style="width: 100%;" />
         </AppMenu>
     </div>
 </template>
@@ -18,7 +18,6 @@
 <script lang="ts" setup>
     import { ref } from 'vue';
     import _ from "lodash";
-    import { SelectItem } from '~/services/app/types';
 
     const props = defineProps({
         label: {
@@ -30,10 +29,18 @@
             required: true
         },
         items: {
-            type: Array<SelectItem>,
+            type: Array<any>,
             required: true
         },
         minWidth: {
+            type: String,
+            required: true
+        },
+        itemText: {
+            type: String,
+            required: true
+        },
+        itemValue: {
             type: String,
             required: true
         },
@@ -51,7 +58,7 @@
         items.value = _.cloneDeep(props.items);
 
         if (props.modelValue > 0) {
-            searchText.value = props.items.find(x => x.id == props.modelValue)?.title || ""
+            searchText.value = props.items.find(x => x[props.itemValue] == props.modelValue)[props.itemText] || ""
         }
     })
 
@@ -89,8 +96,8 @@
     }
 
     function selectOnClick(id: any) {
-        const selectedValue = props.items.find(x => x.id === id);
-        searchText.value = selectedValue?.title || ""
+        const selectedValue = props.items.find(x => x[props.itemValue] === id);
+        searchText.value = selectedValue[props.itemText] || ""
         isMenuVisible.value = false;
 
         emit('update:modelValue', id);

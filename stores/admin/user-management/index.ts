@@ -8,17 +8,21 @@ import {
 
 export const useAdminUserManagementStore = defineStore('admin-user-management', () => {
     const userToList: Ref<UserToList[]> = ref([]);
+    const isPassiveShown: Ref<boolean> = ref(false);
 
     function getUsersToList(): Promise<void> {
-        return GetUsersToListAsync().then((response => {
+        return GetUsersToListAsync(isPassiveShown.value).then((response => {
             if (response.isSuccess && response.data) {
                 userToList.value = response.data;
+            } else {
+                userToList.value = [];
             }
         }))
     }
 
     return {
         userToList,
+        isPassiveShown,
         getUsersToList
     }
 })
