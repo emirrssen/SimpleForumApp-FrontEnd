@@ -17,10 +17,10 @@
                         <AppCardHeader style="font-size: 22px;">{{ getHeaderName() }}</AppCardHeader>
                     </template>
                 </AppCard>
-                <AppCard v-if="selectedPage > 0">
+                <AppCard v-if="adminStore.selectedPage > 0">
                     <template #centerContent>
-                        <UserManagement v-if="selectedPage === SelectedAdminPage.UserManagement" />
-                        <RoleManagement v-if="selectedPage === SelectedAdminPage.RoleManagement" />
+                        <UserManagement v-if="adminStore.selectedPage === SelectedAdminPage.UserManagement" />
+                        <RoleManagement v-if="adminStore.selectedPage === SelectedAdminPage.RoleManagement" />
                     </template>
                 </AppCard>
             </div>
@@ -50,27 +50,18 @@
         clearOnMounted();
     })
 
-    const selectedPage = computed({
-        get(): number {
-            return adminStore.selectedPage;
-        },
-        set(value: number) {
-            adminStore.selectedPage = value;
-        }
-    })
-
     function setSelectedPageToUserManagement() {
         layoutStore.isLoadingVisible = true;
 
         userManagementStore.getUsersToList().then(() => {
-            selectedPage.value = SelectedAdminPage.UserManagement;
+            adminStore.selectedPage = SelectedAdminPage.UserManagement;
         }).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }
 
     function setSelectedPageToRoleManagement() {
-        selectedPage.value = SelectedAdminPage.RoleManagement;
+        adminStore.selectedPage = SelectedAdminPage.RoleManagement;
     }
 
     function setLayoutOnMounted() {
@@ -83,15 +74,15 @@
     }
 
     function clearOnMounted() {
-        selectedPage.value = 0;
+        adminStore.selectedPage = 0;
     }
 
     function getHeaderName(): string {
-        if (selectedPage.value === SelectedAdminPage.UserManagement) {
+        if (adminStore.selectedPage === SelectedAdminPage.UserManagement) {
             return "Kullanıcı Yönetimi";
         }
 
-        if (selectedPage.value === SelectedAdminPage.RoleManagement) {
+        if (adminStore.selectedPage === SelectedAdminPage.RoleManagement) {
             return "Rol Yönetimi";
         }
 

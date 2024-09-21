@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="flex justify-between align-center mb-4 ">
-            <AppInputCheckBox v-model="isPassiveShown" label="Pasif Kayıtları Göster" />
+            <AppInputCheckBox v-model="store.isPassiveShown" label="Pasif Kayıtları Göster" />
             <AppButton @click="openDialogOnClick" title="Yeni Kayıt" type="success" />
         </div>
-        <AppTableData class="mb-2" :headers="headers" :items="usersToList" @on-selected="selectRowOnClick" :selectable="true" />
+        <AppTableData class="mb-2" :headers="headers" :items="store.userToList" @on-selected="selectRowOnClick" :selectable="true" />
         <DetailsDialog />
     </div>
 </template>
@@ -33,18 +33,6 @@
         { title: "Doğum Tarihi", field: "dateOfBirth" },
         { title: "Durum", field: "statusName" }
     ]
-
-    const usersToList = computed(() => store.userToList);
-
-    const isPassiveShown = computed({
-        get(): boolean {
-            return store.isPassiveShown
-        },
-        set(value: boolean) {
-            store.isPassiveShown = value;
-            store.getUsersToList()
-        }
-    })
 
     function openDialogOnClick() {
         detailsDialogStore.currentUser = new UserDetails();

@@ -20,7 +20,7 @@
 
     .app-card {
         background-color: rgb(251, 249, 241);
-        border-radius: 18px;
+        border-radius: 10px;
         border: 1px solid rgb(158, 156, 147);
     }
 
