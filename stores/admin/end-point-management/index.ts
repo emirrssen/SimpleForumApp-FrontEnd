@@ -4,17 +4,16 @@ import {
 } from "~/services/admin/end-point-management/types"
 
 import {
-    GetDetailsByStatusAsync
+    GetAllDetailsAsync
 } from "~/services/admin/end-point-management/index"
 
 export const useAdminEndPointManagementStore = defineStore('admin-end-point-management', () => {
-    const isPassiveShown: Ref<boolean> = ref(false);
     const endPoints: Ref<GroupedEndPoint[]> = ref([]);
     const selectedEndPointGroup: Ref<EndPoint[]> = ref([]);
     const selectedControllerName: Ref<string> = ref("");
 
     function getEndPointsByStatus(): Promise<void> {
-        return GetDetailsByStatusAsync(!isPassiveShown.value).then((response => {
+        return GetAllDetailsAsync().then((response => {
             if (response.isSuccess && response.data) {
                 endPoints.value = response.data
             } else {
@@ -26,7 +25,6 @@ export const useAdminEndPointManagementStore = defineStore('admin-end-point-mana
     }
 
     return {
-        isPassiveShown,
         endPoints,
         selectedEndPointGroup,
         selectedControllerName,
