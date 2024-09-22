@@ -7,6 +7,7 @@
                         <AppCardBody class="flex flex-col gap-3">
                             <AppListItem title="Kullanıcı Yönetimi" @click="setSelectedPageToUserManagement" />
                             <AppListItem title="Rol Yönetimi" @click="setSelectedPageToRoleManagement" />
+                            <AppListItem title="End Point Yönetimi" @click="setSelectedPageToEndPointManagement" />
                         </AppCardBody>
                     </template>
                 </AppCard>
@@ -21,6 +22,7 @@
                     <template #centerContent>
                         <UserManagement v-if="adminStore.selectedPage === SelectedAdminPage.UserManagement" />
                         <RoleManagement v-if="adminStore.selectedPage === SelectedAdminPage.RoleManagement" />
+                        <EndPointManagement v-if="adminStore.selectedPage === SelectedAdminPage.EndPointManagement" />
                     </template>
                 </AppCard>
             </div>
@@ -34,9 +36,11 @@
     import { useAdminStore } from '~/stores/admin';
     import { useAdminUserManagementStore } from '~/stores/admin/user-management';
     import { useAdminRoleManagementStore } from '~/stores/admin/role-management';
+    import { useAdminEndPointManagementStore } from '~/stores/admin/end-point-management';
 
     import UserManagement from './user-management/index.vue';
     import RoleManagement from "./role-management/index.vue";
+    import EndPointManagement from "./end-point-management/index.vue"
 
     import {
         SelectedAdminPage
@@ -46,6 +50,7 @@
     const adminStore = useAdminStore();
     const userManagementStore = useAdminUserManagementStore();
     const roleManagementStore = useAdminRoleManagementStore();
+    const endPointManagementStore = useAdminEndPointManagementStore();
 
     onMounted(() => {
         setLayoutOnMounted()
@@ -72,6 +77,17 @@
         })
     }
 
+    function setSelectedPageToEndPointManagement() {
+        layoutStore.isLoadingVisible = true;
+
+        endPointManagementStore.getEndPointsByStatus().then(() => {
+            adminStore.selectedPage = SelectedAdminPage.EndPointManagement;
+        }).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+
+    }
+
     function setLayoutOnMounted() {
         layoutStore.isGroupsButtonVisible = false;
         layoutStore.isSelectFilterButtonVisible = false;
@@ -92,6 +108,10 @@
 
         if (adminStore.selectedPage === SelectedAdminPage.RoleManagement) {
             return "Rol Yönetimi";
+        }
+
+        if (adminStore.selectedPage === SelectedAdminPage.EndPointManagement) {
+            return "End Point Yönetimi"
         }
 
         return "Admin Paneli";

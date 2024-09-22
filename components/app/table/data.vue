@@ -2,13 +2,13 @@
     <div>
         <div class="app-table-data">
             <div class="header-row">
-                <div :style="{ width: calculateWidth() }" v-for="header in $props.headers">{{ header.title }}</div>
+                <div :style="{ width: header.width ? header.width : calculateWidth() }" v-for="header in $props.headers">{{ header.title }}</div>
             </div>
             <div :class="{ selectable: $props.selectable }" v-for="item in $props.items" class="data-row" @click="selectOnClick(item)">
                 <div
-                    :style="{ width: calculateWidth() }" 
-                    class="data-row-item" 
-                    v-for="data in $props.headers"
+                class="data-row-item" 
+                v-for="data in $props.headers"
+                :style="{ width: data.width ? data.width : calculateWidth() }" 
                 >
                     {{ Object.keys(item).some(x => x === data.field) ? item[data.field] : "" }}
                 </div>

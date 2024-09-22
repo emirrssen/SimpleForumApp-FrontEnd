@@ -10,8 +10,9 @@ export class SelectItem {
 export class AppDataTableHeader {
     title: string = "";
     field: string = "";
+    width?: string = "";
 
-    constructor(fields?: { title: string, field: string }) {
+    constructor(fields?: { title: string, field: string, width?: string }) {
         Object.assign(this, fields);
     }
 }
