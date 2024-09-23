@@ -8,6 +8,7 @@
                             <AppListItem title="Kullanıcı Yönetimi" @click="setSelectedPageToUserManagement" />
                             <AppListItem title="Rol Yönetimi" @click="setSelectedPageToRoleManagement" />
                             <AppListItem title="End Point Yönetimi" @click="setSelectedPageToEndPointManagement" />
+                            <AppListItem title="Yetki Yönetimi" @click="setSelectedPageToPermissionManagement" />
                         </AppCardBody>
                     </template>
                 </AppCard>
@@ -23,6 +24,7 @@
                         <UserManagement v-if="adminStore.selectedPage === SelectedAdminPage.UserManagement" />
                         <RoleManagement v-if="adminStore.selectedPage === SelectedAdminPage.RoleManagement" />
                         <EndPointManagement v-if="adminStore.selectedPage === SelectedAdminPage.EndPointManagement" />
+                        <PermissionManagement v-if="adminStore.selectedPage === SelectedAdminPage.PermissionManagement" />
                     </template>
                 </AppCard>
             </div>
@@ -37,10 +39,12 @@
     import { useAdminUserManagementStore } from '~/stores/admin/user-management';
     import { useAdminRoleManagementStore } from '~/stores/admin/role-management';
     import { useAdminEndPointManagementStore } from '~/stores/admin/end-point-management';
+    import { useAdminPermissionManagementStore } from '~/stores/admin/permission-management';
 
     import UserManagement from './user-management/index.vue';
     import RoleManagement from "./role-management/index.vue";
     import EndPointManagement from "./end-point-management/index.vue"
+    import PermissionManagement from "./permission-management/index.vue"
 
     import {
         SelectedAdminPage
@@ -51,6 +55,7 @@
     const userManagementStore = useAdminUserManagementStore();
     const roleManagementStore = useAdminRoleManagementStore();
     const endPointManagementStore = useAdminEndPointManagementStore();
+    const permissionManagementStore = useAdminPermissionManagementStore();
 
     onMounted(() => {
         setLayoutOnMounted()
@@ -88,6 +93,16 @@
 
     }
 
+    function setSelectedPageToPermissionManagement() {
+        layoutStore.isLoadingVisible = true;
+
+        permissionManagementStore.getPermissions().then(() => {
+            adminStore.selectedPage = SelectedAdminPage.PermissionManagement
+        }).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+    }
+
     function setLayoutOnMounted() {
         layoutStore.isGroupsButtonVisible = false;
         layoutStore.isSelectFilterButtonVisible = false;
@@ -112,6 +127,10 @@
 
         if (adminStore.selectedPage === SelectedAdminPage.EndPointManagement) {
             return "End Point Yönetimi"
+        }
+
+        if (adminStore.selectedPage === SelectedAdminPage.PermissionManagement) {
+            return "Yetki Yönetimi"
         }
 
         return "Admin Paneli";
