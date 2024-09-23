@@ -1,5 +1,6 @@
 import {
-    PermissionToList
+    PermissionToList,
+    Permission
 } from "~/services/admin/permission-management/types"
 
 import {
