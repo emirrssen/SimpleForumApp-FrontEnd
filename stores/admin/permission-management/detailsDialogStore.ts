@@ -3,13 +3,16 @@ import {
 } from "~/services/admin/permission-management/types"
 
 import {
-    InsertAsync
+    InsertAsync,
+    GetByIdAsync,
+    UpdateByIdAsync
 } from "~/services/admin/permission-management/index"
 
 import { SelectItem } from "~/services/app/types";
 import { GetStatusesAsync } from "~/services/admin/status-management/index"
 
 import { useToast } from "vue-toastification";
+import { update } from "lodash";
 
 export const useAdminPermissionManagementDetailsDialogStore = defineStore('permission-management-details-dialog', () => {
 
@@ -28,8 +31,30 @@ export const useAdminPermissionManagementDetailsDialogStore = defineStore('permi
         }))
     }
 
+    function getById(id: number): Promise<boolean> {
+        return GetByIdAsync(id).then((response => {
+            if (response.isSuccess && response.data) {
+                console.log(response.data);
+                currentPermission.value = response.data
+            }
+
+            return response.isSuccess;
+        }))
+    }
+
     function insert(): Promise<boolean> {
         return InsertAsync(currentPermission.value).then((response => {
+            if (response.isSuccess) {
+                isDialogVisible.value = false;
+                toast.success(response.message);
+            }
+
+            return response.isSuccess;
+        }))
+    }
+
+    function updateById(): Promise<boolean> {
+        return UpdateByIdAsync(currentPermission.value).then((response => {
             if (response.isSuccess) {
                 isDialogVisible.value = false;
                 toast.success(response.message);
@@ -44,6 +69,8 @@ export const useAdminPermissionManagementDetailsDialogStore = defineStore('permi
         currentPermission,
         statuses,
         getStatuses,
-        insert
+        insert,
+        getById,
+        updateById
     }
 })

@@ -17,3 +17,16 @@ export function InsertAsync(permissionToAdd: Permission): Promise<Response> {
         Description: permissionToAdd.description
     });
 }
+
+export function GetByIdAsync(id: number): Promise<GenericDataResponse<Permission>> {
+    return Get<GenericDataResponse<Permission>>('admin/permission-management/by-id', { Id: id });
+}
+
+export function UpdateByIdAsync(permissionToUpdate: Permission): Promise<Response> {
+    return Put<Response>('admin/permission-management', { }, {
+        Id: permissionToUpdate.id,
+        StatusId: permissionToUpdate.statusId,
+        Name: permissionToUpdate.name,
+        Description: permissionToUpdate.description
+    });
+}

@@ -4,7 +4,7 @@
             <AppInputCheckBox v-model="isPassiveShown" label="Pasif Kayıtları Göster" />
             <AppButton @click="openDialogOnClick" title="Yeni Kayıt" type="success" />
         </div>
-        <AppTableData class="mb-2" :headers="headers" :items="store.permissions" @on-selected="" :selectable="false" />
+        <AppTableData class="mb-2" :headers="headers" :items="store.permissions" @on-selected="selectRowOnClick" :selectable="true" />
         <DetailsDialog />
     </div>
 </template>
@@ -49,7 +49,18 @@
         detailsStore.currentPermission = new Permission();
         detailsStore.isDialogVisible = true;
     }
-    
+
+    function selectRowOnClick(event: any) {
+        layoutStore.isLoadingVisible = true;
+
+        detailsStore.getById(event.id).then((response => {
+            if (response) {
+                detailsStore.isDialogVisible = true;
+            }
+        })).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+    }
 
 </script>
 

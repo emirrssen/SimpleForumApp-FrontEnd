@@ -65,7 +65,15 @@
 
     function saveOnClick() {
         if (store.currentPermission.id > 0) {
-            
+            layoutStore.isLoadingVisible = true;
+
+            store.updateById().then((response => {
+                if (response) {
+                    permissionManagemnetStore.getPermissions();
+                }
+            })).finally(() => {
+                layoutStore.isLoadingVisible = false;
+            })
         } else {
             layoutStore.isLoadingVisible = true;
 
