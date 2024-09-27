@@ -27,6 +27,7 @@
         user-select: none;
         background-color: rgba(170, 215, 217, .7);
         border-radius: 6px;
+        overflow: hidden;
     }
 
     .app-list-item:hover {
