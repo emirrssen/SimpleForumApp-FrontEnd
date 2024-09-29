@@ -1,9 +1,9 @@
 <template>
     <div class="app-input flex flex-col relative">
         <label class="text-lg font-normal" for="app-input-comp">{{ $props.label }}</label>
-        <div class="flex items-center justify-center" style="gap: 8px; border-bottom: 1px solid black;" @click="focusDateInputOnClick">
-            <input @input="updateValue" type="date" id="app-input-comp" :placeholder="$props.placeholder" :value="$props.modelValue">
-            <Icon @click="clearOnClick()" v-if="$props.modelValue && $props.modelValue?.length > 0" class="icon" name="ic:outline-close" />
+        <div class="flex items-center justify-center" style="gap: 8px; border-bottom: 1px solid black;">
+            <input style="padding-bottom: 2px;" @input="updateValue" type="date" id="app-input-comp" :placeholder="$props.placeholder" :value="$props.modelValue">
+            <Icon @click="clearOnClick()" v-if="$props.modelValue && $props.modelValue?.length > 0 && $props.clearable" class="icon" name="ic:outline-close" />
         </div>
     </div>
 </template>
@@ -24,6 +24,11 @@
         type: {
             type: String,
             required: true
+        },
+        clearable: {
+            type: Boolean,
+            required: false,
+            default: false
         },
         modelValue: {
             type: String,
