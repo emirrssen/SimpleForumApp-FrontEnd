@@ -41,3 +41,10 @@ export function GetUnmatchedPermissionsForRoleAsync(roleId: number): Promise<Gen
 export function GetPermissionMatchingsForRolesByRoleIdAsync(roleId: number): Promise<GenericDataResponse<PermissionMatch[]>> {
     return Get<GenericDataResponse<PermissionMatch[]>>('admin/permission-matching-management/for-roles-by-role', { RoleId: roleId });
 }
+
+export function InsertRoleMatchAsync(roleId: number, permissionId: number): Promise<Response> {
+    return Post<Response>('admin/permission-matching-management/insert-role-match', {}, {
+        RoleId: roleId,
+        PermissionId: permissionId
+    });
+}
