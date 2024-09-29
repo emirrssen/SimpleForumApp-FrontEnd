@@ -4,11 +4,11 @@
             <label class="text-lg font-normal">{{ $props.label }}</label>
             <div class="flex items-center justify-center" style="gap: 8px; border-bottom: 1px solid black; padding-bottom: 3px;">
                 <input style="padding-bottom: 2px" autocomplete="off" @input="searchOnInput()" @focus="openMenuOnClick()" @blur="closeMenuOnClick" type="text" id="app-input-select-comp" :placeholder="$props.placeholder" v-model="searchText">
-                <Icon @click="clearOnClick()" v-if="searchText.length > 0" class="icon" name="ic:outline-close" />
+                <Icon @click="clearOnClick()" v-if="searchText.length > 0 && $props.clearable" class="icon" name="ic:outline-close" />
                 <Icon name="ic:baseline-arrow-drop-down" />
             </div>
         </div>
-        <AppMenu tabindex="0" v-if="isMenuVisible" :minWidth="props.minWidth" class="fixed flex flex-col mt-1 z-10" style="max-height: 200px; overflow-y: auto;">
+        <AppMenu tabindex="0" v-if="isMenuVisible" :minWidth="$props.minWidth" class="fixed flex flex-col mt-1 z-10" style="max-height: 200px; overflow-y: auto;">
             <AppMenuItem v-if="!items || (items && items.length === 0)" title="Veri Bulunamadı" style="width: 100%;" />
             <AppMenuItem @click="selectOnClick(item[$props.itemValue])" v-else v-for="item in items" :key="item[$props.itemValue]" :title="item[$props.itemText]" style="width: 100%;" />
         </AppMenu>
@@ -44,6 +44,11 @@
             type: String,
             required: true
         },
+        clearable: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
         modelValue: {
             type: Number,
             required: true
@@ -52,7 +57,16 @@
 
     const emit = defineEmits(['update:modelValue'])
 
-    let items: Ref<any[]> = ref([]);
+    const items = ref(props.items);
+    let originalItems: Ref<any[]> = ref([]);
+
+    watch(() => props.items, (newItems) => {
+        items.value = newItems;
+        
+        if (newItems.length === 0) {
+            searchText.value = "";
+        }
+    });
 
     onMounted(() => {
         items.value = _.cloneDeep(props.items);
@@ -89,7 +103,7 @@
 
     function searchOnInput() {
         if (searchText.value === "") {
-            items.value = _.cloneDeep(props.items);
+            items.value = _.cloneDeep(originalItems.value);
         }
 
         items.value = _.cloneDeep(props.items.filter(x => x.title.toLocaleLowerCase().includes(searchText.value.toLocaleLowerCase())))
