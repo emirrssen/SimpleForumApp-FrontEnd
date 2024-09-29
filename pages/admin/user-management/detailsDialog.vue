@@ -103,6 +103,7 @@
 
     function openRoleMatchingDialogOnClick() {
         layoutStore.isLoadingVisible = true;
+        roleMatchingStore.currentUserId = store.currentUser.id;
 
         Promise.all([
             roleMatchingStore.getRoles(store.currentUser.id),

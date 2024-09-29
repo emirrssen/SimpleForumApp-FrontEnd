@@ -50,3 +50,10 @@ export function GetRolesToSelectAsync(userId: number): Promise<GenericDataRespon
 export function GetRoleMatchingsAsync(userId: number): Promise<GenericDataResponse<RoleMatch[]>> {
     return Get<GenericDataResponse<RoleMatch[]>>('admin/user-management/role-matchings', { UserId: userId });
 }
+
+export function InsertRoleMatchAsync(userId: number, roleId: number): Promise<Response> {
+    return Post<Response>('admin/user-management/role-match', {}, {
+        UserId: userId,
+        RoleId: roleId
+    })
+}

@@ -18,7 +18,7 @@
                                 />
                             </div>
                             <div class="col-span-1 flex justify-center items-end">
-                                <AppButton @click="" title="Ekle" type="success" />
+                                <AppButton @click="addOnClick" title="Ekle" type="success" />
                             </div>
                         </div>
                         <div class="flex flex-col mt-3">
@@ -61,12 +61,27 @@
 <script lang="ts" setup>
 
     import { useUserRoleMatchingDialogStore } from '~/stores/admin/user-management/roleMatchingDialogStore';
+    import { useLayoutStore } from '~/stores/layout';
 
     const store = useUserRoleMatchingDialogStore();
+    const layoutStore = useLayoutStore();
 
     function closeOnClick() {
         store.selectedRole = 0;
         store.isDialogVisible = false;
+    }
+
+    function addOnClick() {
+        layoutStore.isLoadingVisible = true;
+
+        store.insertRoleMatch().then((response => {
+            if (response) {
+                store.getRoles(store.currentUserId);
+                store.getRoleMatchings(store.currentUserId);
+            }
+        })).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
     }
 
 </script>

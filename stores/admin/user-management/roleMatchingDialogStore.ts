@@ -8,12 +8,18 @@ import {
 
 import {
     GetRolesToSelectAsync,
-    GetRoleMatchingsAsync
+    GetRoleMatchingsAsync,
+    InsertRoleMatchAsync
 } from "~/services/admin/user-management/index";
+
+import { useToast } from "vue-toastification";
 
 export const useUserRoleMatchingDialogStore = defineStore('user-role-matching-dialog', () => {
 
+    const toast = useToast();
+
     const isDialogVisible: Ref<boolean> = ref(false);
+    const currentUserId: Ref<number> = ref(0);
 
     const roles: Ref<RoleToSelect[]> = ref([]);
     const roleMatchings: Ref<RoleMatch[]> = ref([]);
@@ -25,6 +31,8 @@ export const useUserRoleMatchingDialogStore = defineStore('user-role-matching-di
         return GetRolesToSelectAsync(userId).then((response => {
             if (response.isSuccess && response.data) {
                 roles.value = response.data;
+            } else {
+                roles.value = [];
             }
         }))
     }
@@ -33,6 +41,8 @@ export const useUserRoleMatchingDialogStore = defineStore('user-role-matching-di
         return GetRoleMatchingsAsync(userId).then((response => {
             if (response.isSuccess && response.data) {
                 roleMatchings.value = response.data
+            } else {
+                roleMatchings.value = [];
             }
         }))
     }
@@ -45,7 +55,18 @@ export const useUserRoleMatchingDialogStore = defineStore('user-role-matching-di
         }))
     }
 
+    function insertRoleMatch(): Promise<boolean> {
+        return InsertRoleMatchAsync(currentUserId.value, selectedRole.value).then((response => {
+            if (response.isSuccess) {
+                toast.success(response.message)
+            }
+
+            return response.isSuccess;
+        }))
+    }
+
     return {
+        currentUserId,
         isDialogVisible,
         roles,
         roleMatchings,
@@ -53,6 +74,7 @@ export const useUserRoleMatchingDialogStore = defineStore('user-role-matching-di
         selectedRole,
         getRoles,
         getRoleMatchings,
-        getStatuses
+        getStatuses,
+        insertRoleMatch
     }
 })
