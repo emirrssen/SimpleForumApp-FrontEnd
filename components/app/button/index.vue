@@ -10,6 +10,7 @@
             isTypePlain ? 'app-button-plain' : '',
             isTypeIcon ? 'app-button-icon' : ''
         ]"
+        style="height: 30px;"
     >
         <span v-if="!isTypeIcon">{{ $props.title }}</span>
         <Icon v-if="isTypeIcon" :name="$props.icon || ''" />
@@ -21,7 +22,7 @@
     const props = defineProps({
         title: {
             type: String,
-            required: false
+            required: false,
         },
         icon: {
             type: String,

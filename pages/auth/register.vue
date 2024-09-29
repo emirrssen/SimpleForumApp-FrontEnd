@@ -5,24 +5,24 @@
                 <AppCardHeader>Kayıt Ol</AppCardHeader>
                 <AppCardBody class="mt-4 flex flex-col" style="gap: 12px;">
                     <div class="columns-2 py-1">
-                        <AppInputText type="text" v-model="userToRegister.FirstName" placeholder="Giriniz..." label="İsim" />
-                        <AppInputText v-model="userToRegister.LastName" type="text" placeholder="Giriniz..." label="Soyisim" />
+                        <AppInputText :clearable="true" type="text" v-model="userToRegister.FirstName" placeholder="Giriniz..." label="İsim" />
+                        <AppInputText :clearable="true" v-model="userToRegister.LastName" type="text" placeholder="Giriniz..." label="Soyisim" />
                     </div>
                     <div class="columns-2 py-1">
-                        <AppInputText type="text" placeholder="Giriniz..." label="Kullanıcı Adı" v-model="userToRegister.Username" />
-                        <AppInputText type="text" placeholder="Giriniz..." label="E-Posta Adresi" v-model="userToRegister.EmailAddress" />
+                        <AppInputText :clearable="true" type="text" placeholder="Giriniz..." label="Kullanıcı Adı" v-model="userToRegister.Username" />
+                        <AppInputText :clearable="true" type="text" placeholder="Giriniz..." label="E-Posta Adresi" v-model="userToRegister.EmailAddress" />
                     </div>
                     <div class="columns-2 py-1">
-                        <AppInputDatePicker type="text" placeholder="Seçiniz..." label="Doğum Tarihi" v-model="userToRegister.DateOfBirth" />
-                        <AppInputSelect minWidth="261px" label="Ülke" placeholder="Seçiniz..." :items="countries" v-model="userToRegister.CountryId" />
+                        <AppInputDatePicker :clearable="true" type="text" placeholder="Seçiniz..." label="Doğum Tarihi" v-model="userToRegister.DateOfBirth" />
+                        <AppInputSelect :clearable="true" itemText="title" itemValue="id"  minWidth="261px" label="Ülke" placeholder="Seçiniz..." :items="countries" v-model="userToRegister.CountryId" />
                     </div>
                     <div class="columns-2 py-1">
-                        <AppInputSelect minWidth="261px" label="Cinsiyet" placeholder="Seçiniz..." :items="genders" v-model="userToRegister.GenderId" />
-                        <AppInputText type="text" placeholder="05xxxxxxxxx" label="Telefon Numarası" v-model="userToRegister.PhoneNumber" />
+                        <AppInputSelect itemText="title" itemValue="id" :clearable="true" minWidth="261px" label="Cinsiyet" placeholder="Seçiniz..." :items="genders" v-model="userToRegister.GenderId" />
+                        <AppInputText :clearable="true" type="text" placeholder="05xxxxxxxxx" label="Telefon Numarası" v-model="userToRegister.PhoneNumber" />
                     </div>
                     <div class="columns-2 py-1">
-                        <AppInputText type="password" placeholder="Seçiniz..." label="Şifre" v-model="userToRegister.Password" />
-                        <AppInputText type="password" placeholder="Seçiniz..." label="Şifre Tekrar" v-model="userToRegister.PasswordRepeat" />
+                        <AppInputText :clearable="true" type="password" placeholder="Seçiniz..." label="Şifre" v-model="userToRegister.Password" />
+                        <AppInputText :clearable="true" type="password" placeholder="Seçiniz..." label="Şifre Tekrar" v-model="userToRegister.PasswordRepeat" />
                     </div>
                 </AppCardBody>
                 <AppCardFooter class="mt-4 flex justify-end" style="gap: 12px;">

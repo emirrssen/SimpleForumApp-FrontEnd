@@ -4,8 +4,8 @@
             <template #centerContent>
                 <AppCardHeader>Giriş Yap</AppCardHeader>
                 <AppCardBody class="mt-4 flex flex-col" style="gap: 12px;">
-                    <AppInputText type="text" v-model="email" placeholder="Giriniz..." label="E-Posta Adresi"></AppInputText>
-                    <AppInputText v-model="password" type="password" placeholder="Giriniz..." label="Şifre"></AppInputText>
+                    <AppInputText :clearable="true" type="text" v-model="email" placeholder="Giriniz..." label="E-Posta Adresi"></AppInputText>
+                    <AppInputText :clearable="true" v-model="password" type="password" placeholder="Giriniz..." label="Şifre"></AppInputText>
                     <AppInputCheckBox label="Beni Hatırla" v-model="isChecked" />
                 </AppCardBody>
                 <AppCardFooter class="mt-4 flex justify-between">

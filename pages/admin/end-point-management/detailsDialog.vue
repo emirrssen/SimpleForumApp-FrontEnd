@@ -70,11 +70,15 @@
                     </AppCardBody>
                     <AppCardFooter class="flex justify-between align-center">
                         <AppButton @click="closeDialogOnClick" title="Kapat" type="text" />
-                        <AppButton @click="saveOnClick" title="Kaydet" type="info" />
+                        <div class="flex" style="gap: 12px;">
+                            <AppButton @click="openPermissionMatchingDialogOnClick" title="Yetkileri Görüntüle" type="success" />
+                            <AppButton @click="saveOnClick" title="Kaydet" type="info" />
+                        </div>
                     </AppCardFooter>
                 </template>
             </AppCard>
         </AppDialog>
+        <PermissionMatchingDialog />
     </div>
 </template>
 
@@ -83,10 +87,15 @@
     import { useAdminEndPointManagementDetailsDialogStore } from '~/stores/admin/end-point-management/detailsDialogStore';
     import { useLayoutStore } from '~/stores/layout';
     import { useAdminEndPointManagementStore } from '~/stores/admin/end-point-management';
+    import { usePermissionMatchingDialogStore } from '~/stores/admin/components/permissionMatchingDialogStore';
+
+    import PermissionMatchingDialog from '../components/permissionMatchingDialog.vue';
+    import { PermissionMatchType } from '~/services/admin/permission-matching-management/types';
 
     const store = useAdminEndPointManagementDetailsDialogStore();
     const layoutStore = useLayoutStore();
     const endPointManagementStore = useAdminEndPointManagementStore();
+    const permissionMatchingStore = usePermissionMatchingDialogStore();
 
     const selectData = [
         { value: true, text: "Evet", id: 1 },
@@ -108,6 +117,22 @@
                 })
             }
         })).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+    }
+
+    function openPermissionMatchingDialogOnClick() {
+        permissionMatchingStore.idToUse = store.currentEndPoint.id;
+        permissionMatchingStore.type = PermissionMatchType.EndPoint;
+        layoutStore.isLoadingVisible = true;
+
+        Promise.all([
+            permissionMatchingStore.getPermissionMatchings(store.currentEndPoint.id),
+            permissionMatchingStore.getStatuses(),
+            permissionMatchingStore.getUnmatchedPermissionsForEndPoint(store.currentEndPoint.id)
+        ]).then(() => {
+            permissionMatchingStore.isDialogVisible = true;
+        }).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }

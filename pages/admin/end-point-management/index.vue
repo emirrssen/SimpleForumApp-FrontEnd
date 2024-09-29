@@ -5,6 +5,7 @@
                 <AppListItem v-for="item in store.endPoints" :title="item.controllerName" @click="selectEndPointGroupOnClick(item)" />
             </div>
             <div class="col-span-3 flex flex-col align-center">
+                <AppAlert v-if="!store.selectedControllerName" type="success" text="End pointleri listelemek için soldan controller seçiniz."/>
                 <div class="mb-4" style="font-size: larger; font-weight: 500;" v-if="store.selectedControllerName">
                     {{ store.selectedControllerName }} İçin End Point Listesi
                 </div>
