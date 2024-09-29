@@ -13,7 +13,8 @@ import {
     UpdateEndPointMatchesAsync,
     GetUnmatchedPermissionsForRoleAsync,
     GetPermissionMatchingsForRolesByRoleIdAsync,
-    InsertRoleMatchAsync
+    InsertRoleMatchAsync,
+    UpdateRoleMatchesAsync
 } from "~/services/admin/permission-matching-management/index";
 
 import { useToast } from "vue-toastification";
@@ -108,6 +109,16 @@ export const usePermissionMatchingDialogStore = defineStore('permission-matching
         }));
     }
 
+    function updateRoleMatches(): Promise<boolean> {
+        return UpdateRoleMatchesAsync(permissionMatchings.value, idToUse.value).then((response => {
+            if (response.isSuccess) {
+                toast.success(response.message)
+            }
+
+            return response.isSuccess;
+        }))
+    }
+
     return {
         isDialogVisible,
         permissions,
@@ -123,6 +134,7 @@ export const usePermissionMatchingDialogStore = defineStore('permission-matching
         updateEndPointMatches,
         getUnmatchedPermissionsForRole,
         getPermissionMatchingsForRoles,
-        insertRoleMatch
+        insertRoleMatch,
+        updateRoleMatches
     }
 })

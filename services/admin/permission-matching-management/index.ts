@@ -48,3 +48,15 @@ export function InsertRoleMatchAsync(roleId: number, permissionId: number): Prom
         PermissionId: permissionId
     });
 }
+
+export function UpdateRoleMatchesAsync(itemsToUpdate: PermissionMatch[], roleId: number): Promise<Response> {
+    return Put<Response>('admin/permission-matching-management/update-role-matches', {}, {
+        ItemsToUpdate: itemsToUpdate.map(x => {
+            return {
+                RoleId: roleId,
+                PermissionId: x.permissionId,
+                StatusId: x.statusId
+            }
+        })
+    })
+}

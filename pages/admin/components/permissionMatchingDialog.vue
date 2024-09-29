@@ -113,6 +113,19 @@
                 layoutStore.isLoadingVisible = false;
             })
         }
+
+        if (store.type === PermissionMatchType.Role) {
+            layoutStore.isLoadingVisible = true;
+
+            store.updateRoleMatches().then((response => {
+                if (response) {
+                    store.getUnmatchedPermissionsForRole(store.idToUse);
+                    store.getPermissionMatchingsForRoles(store.idToUse);
+                }
+            })).finally(() => {
+                layoutStore.isLoadingVisible = false;
+            })
+        }
     }
 
     function clear() {
