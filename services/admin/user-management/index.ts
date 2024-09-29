@@ -4,7 +4,9 @@ import { Get, Post, Put } from "../../core/serviceCore"
 import {
     UserToList,
     UserDetails,
-    UserToAdd
+    UserToAdd,
+    RoleToSelect,
+    RoleMatch
 } from "./types"
 
 export function GetUsersToListAsync(isPassiveShown: boolean): Promise<GenericDataResponse<UserToList[]>> {
@@ -39,4 +41,31 @@ export function InsertAsync(userToAdd: UserDetails): Promise<Response> {
         PhoneNumber: userToAdd.phoneNumber,
         DateOfBirth: userToAdd.dateOfBirth
     });
+}
+
+export function GetRolesToSelectAsync(userId: number): Promise<GenericDataResponse<RoleToSelect[]>> {
+    return Get<GenericDataResponse<RoleToSelect[]>>('admin/user-management/roles-to-select', { UserId: userId });
+}
+
+export function GetRoleMatchingsAsync(userId: number): Promise<GenericDataResponse<RoleMatch[]>> {
+    return Get<GenericDataResponse<RoleMatch[]>>('admin/user-management/role-matchings', { UserId: userId });
+}
+
+export function InsertRoleMatchAsync(userId: number, roleId: number): Promise<Response> {
+    return Post<Response>('admin/user-management/role-match', {}, {
+        UserId: userId,
+        RoleId: roleId
+    })
+}
+
+export function UpdateRoleMatchingsAsync(itemsToUpdate: RoleMatch[], userId: number): Promise<Response> {
+    return Put<Response>('admin/user-management/update-role-matchings', {}, {
+        ItemsToUpdate: itemsToUpdate.map(x => {
+            return {
+                UserId: userId,
+                RoleId: x.roleId,
+                StatusId: x.statusId
+            }
+        })
+    })
 }

@@ -68,7 +68,7 @@
                             type="text"
                         />
                     </AppCardBody>
-                    <AppCardFooter class="flex justify-between align-center">
+                    <AppCardFooter class="flex justify-between items-center">
                         <AppButton @click="closeDialogOnClick" title="Kapat" type="text" />
                         <div class="flex" style="gap: 12px;">
                             <AppButton v-if="store.currentEndPoint.id > 0" @click="openPermissionMatchingDialogOnClick" title="Yetkileri Görüntüle" type="success" />
