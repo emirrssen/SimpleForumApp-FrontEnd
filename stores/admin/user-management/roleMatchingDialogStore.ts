@@ -9,7 +9,8 @@ import {
 import {
     GetRolesToSelectAsync,
     GetRoleMatchingsAsync,
-    InsertRoleMatchAsync
+    InsertRoleMatchAsync,
+    UpdateRoleMatchingsAsync
 } from "~/services/admin/user-management/index";
 
 import { useToast } from "vue-toastification";
@@ -65,6 +66,16 @@ export const useUserRoleMatchingDialogStore = defineStore('user-role-matching-di
         }))
     }
 
+    function updateRoleMatchings(): Promise<boolean> {
+        return UpdateRoleMatchingsAsync(roleMatchings.value, currentUserId.value).then((response => {
+            if (response.isSuccess) {
+                toast.success(response.message)
+            }
+
+            return response.isSuccess;
+        }))
+    }
+
     return {
         currentUserId,
         isDialogVisible,
@@ -75,6 +86,7 @@ export const useUserRoleMatchingDialogStore = defineStore('user-role-matching-di
         getRoles,
         getRoleMatchings,
         getStatuses,
-        insertRoleMatch
+        insertRoleMatch,
+        updateRoleMatchings
     }
 })

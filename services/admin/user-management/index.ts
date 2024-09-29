@@ -57,3 +57,15 @@ export function InsertRoleMatchAsync(userId: number, roleId: number): Promise<Re
         RoleId: roleId
     })
 }
+
+export function UpdateRoleMatchingsAsync(itemsToUpdate: RoleMatch[], userId: number): Promise<Response> {
+    return Put<Response>('admin/user-management/update-role-matchings', {}, {
+        ItemsToUpdate: itemsToUpdate.map(x => {
+            return {
+                UserId: userId,
+                RoleId: x.roleId,
+                StatusId: x.statusId
+            }
+        })
+    })
+}

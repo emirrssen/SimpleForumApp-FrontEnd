@@ -51,7 +51,7 @@
                 </AppCardBody>
                 <AppCardFooter class="flex justify-between items-center">
                     <AppButton @click="closeOnClick" type="text" title="Kapat" />
-                    <AppButton type="info" title="Kaydet" />
+                    <AppButton @click="saveOnClick" type="info" title="Kaydet" />
                 </AppCardFooter>
             </template>
         </AppCard>
@@ -75,6 +75,19 @@
         layoutStore.isLoadingVisible = true;
 
         store.insertRoleMatch().then((response => {
+            if (response) {
+                store.getRoles(store.currentUserId);
+                store.getRoleMatchings(store.currentUserId);
+            }
+        })).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+    }
+
+    function saveOnClick() {
+        layoutStore.isLoadingVisible = true;
+
+        store.updateRoleMatchings().then((response => {
             if (response) {
                 store.getRoles(store.currentUserId);
                 store.getRoleMatchings(store.currentUserId);
