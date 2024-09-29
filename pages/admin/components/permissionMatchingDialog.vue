@@ -23,6 +23,7 @@
                         </div>
                         <div class="flex flex-col mt-3">
                             <span style="font-size: 20px;" class="mb-3">Mevcut Eşleştirmeler</span>
+                            <AppAlert type="success" text="Henüz bir eşleştirme yapılmamış." v-if="store.permissionMatchings.length === 0"/>
                             <div 
                                 class="flex p-2 mb-2" 
                                 v-for="item in store.permissionMatchings" :key="item.permissionId"
@@ -78,7 +79,7 @@
             store.insertEndPointMatch().then((response => {
                 if (response) {
                     store.getUnmatchedPermissionsForEndPoint(store.idToUse);
-                    store.getPermissionMatchings(store.idToUse);
+                    store.getPermissionMatchingsForEndPoint(store.idToUse);
                 }
             })).finally(() => {
                 layoutStore.isLoadingVisible = false;
@@ -93,7 +94,7 @@
             store.updateEndPointMatches().then((response => {
                 if (response) {
                     store.getUnmatchedPermissionsForEndPoint(store.idToUse);
-                    store.getPermissionMatchings(store.idToUse);
+                    store.getPermissionMatchingsForEndPoint(store.idToUse);
                 }
             })).finally(() => {
                 layoutStore.isLoadingVisible = false;

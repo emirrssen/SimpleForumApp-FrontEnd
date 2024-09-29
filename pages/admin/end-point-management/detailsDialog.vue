@@ -127,7 +127,7 @@
         layoutStore.isLoadingVisible = true;
 
         Promise.all([
-            permissionMatchingStore.getPermissionMatchings(store.currentEndPoint.id),
+            permissionMatchingStore.getPermissionMatchingsForEndPoint(store.currentEndPoint.id),
             permissionMatchingStore.getStatuses(),
             permissionMatchingStore.getUnmatchedPermissionsForEndPoint(store.currentEndPoint.id)
         ]).then(() => {

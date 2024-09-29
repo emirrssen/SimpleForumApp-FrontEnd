@@ -1,7 +1,7 @@
 <template>
     <div>
         <AppDialog v-model="store.isDialogVisible">
-            <AppCard style="width: 600px;">
+            <AppCard style="width: 700px;">
                 <template #centerContent>
                     <AppCardHeader>Rol Detayları</AppCardHeader>
                     <AppCardBody class="my-2 flex flex-col">
@@ -31,11 +31,15 @@
                     </AppCardBody>
                     <AppCardFooter class="flex justify-between align-center">
                         <AppButton @click="closeDialogOnClick" title="Kapat" type="text" />
-                        <AppButton @click="saveOnClick" title="Kaydet" type="info" />
+                        <div class="flex" style="gap: 12px;">
+                            <AppButton @click="openPermissionMatchingDialogOnClick" title="Yetkileri Görüntüle" type="success" />
+                            <AppButton @click="saveOnClick" title="Kaydet" type="info" />
+                        </div>
                     </AppCardFooter>
                 </template>
             </AppCard>
         </AppDialog>
+        <PermissionMatchingDialog />
     </div>
 </template>
 
@@ -44,6 +48,12 @@
     import { useAdminRoleManagementDetailsDialogStore } from '~/stores/admin/role-management/detailsDialogStore';
     import { useLayoutStore } from '~/stores/layout';
     import { useAdminRoleManagementStore } from '~/stores/admin/role-management';
+    import { usePermissionMatchingDialogStore } from '~/stores/admin/components/permissionMatchingDialogStore';
+
+    import PermissionMatchingDialog from '../components/permissionMatchingDialog.vue';
+    import { PermissionMatchType } from '~/services/admin/permission-matching-management/types';
+
+    const permissionMatchingStore = usePermissionMatchingDialogStore();
 
     const store = useAdminRoleManagementDetailsDialogStore();
     const layoutStore = useLayoutStore();
@@ -83,6 +93,22 @@
         layoutStore.isLoadingVisible = true;
 
         store.getStatuses().finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+    }
+
+    function openPermissionMatchingDialogOnClick() {
+        permissionMatchingStore.idToUse = store.currentRole.id;
+        permissionMatchingStore.type = PermissionMatchType.Role;
+        layoutStore.isLoadingVisible = true;
+
+        Promise.all([
+            permissionMatchingStore.getStatuses(),
+            permissionMatchingStore.getUnmatchedPermissionsForRole(store.currentRole.id),
+            permissionMatchingStore.getPermissionMatchingsForRoles(store.currentRole.id)
+        ]).then(() => {
+            permissionMatchingStore.isDialogVisible = true;
+        }).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }
