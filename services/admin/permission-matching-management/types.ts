@@ -5,7 +5,6 @@ export class PermissionMatch {
     createdDate: string = "";
 
     constructor(fields?: {
-        endPointId: number,
         permissionId: number,
         statusId: number,
         permissionName: string,

@@ -25,11 +25,15 @@
                     </AppCardBody>
                     <AppCardFooter class="flex justify-between align-center">
                         <AppButton @click="closeDialogOnClick" title="Kapat" type="text" />
-                        <AppButton @click="saveOnClick" title="Kaydet" type="info" />
+                        <div class="flex" style="gap: 12px;">
+                            <AppButton v-if="store.currentUser.id > 0" @click="openRoleMatchingDialogOnClick" title="Yetkileri Görüntüle" type="success" />
+                            <AppButton @click="saveOnClick" title="Kaydet" type="info" />
+                        </div>
                     </AppCardFooter>
                 </template>
             </AppCard>
         </AppDialog>
+        <RoleMatchingDialog />
     </div>
 </template>
 
@@ -38,6 +42,9 @@
     import { useAdminUserManagementDetailsDialogStore } from '~/stores/admin/user-management/detailsDialogStore';
     import { useLayoutStore } from '~/stores/layout';
     import { useAdminUserManagementStore } from '~/stores/admin/user-management';
+    import { useUserRoleMatchingDialogStore } from '~/stores/admin/user-management/roleMatchingDialogStore';
+
+    import RoleMatchingDialog from './roleMatchingDialog.vue';
 
     import {
         UserDetails
@@ -46,6 +53,7 @@
     const store = useAdminUserManagementDetailsDialogStore();
     const userManagementStore = useAdminUserManagementStore();
     const layoutStore = useLayoutStore();
+    const roleMatchingStore = useUserRoleMatchingDialogStore();
 
     onMounted(() => {
         loadOnMounted();
@@ -91,6 +99,21 @@
         ]).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
+    }
+
+    function openRoleMatchingDialogOnClick() {
+        layoutStore.isLoadingVisible = true;
+
+        Promise.all([
+            roleMatchingStore.getRoles(store.currentUser.id),
+            roleMatchingStore.getRoleMatchings(store.currentUser.id),
+            roleMatchingStore.getStatuses()
+        ]).then(() => {
+            roleMatchingStore.isDialogVisible = true;
+        }).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+
     }
 
 </script>

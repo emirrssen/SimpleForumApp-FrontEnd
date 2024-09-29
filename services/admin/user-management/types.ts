@@ -75,3 +75,28 @@ export class UserToAdd {
         Object.assign(this, fields);
     }
 }
+
+export class RoleToSelect {
+    id: number = 0;
+    name: string = "";
+
+    constructor(fields?: { id: number, name: string }) {
+        Object.assign(this, fields);
+    }
+}
+
+export class RoleMatch {
+    roleId: number = 0;
+    statusId: number = 0;
+    roleName: string = "";
+    createdDate: string = "";
+
+    constructor(fields?: {
+        roleId: number,
+        statusId: number,
+        roleName: string,
+        createdDate: string
+    }) {
+        Object.assign(this, fields);
+    }
+}

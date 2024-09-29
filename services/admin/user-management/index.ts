@@ -4,7 +4,9 @@ import { Get, Post, Put } from "../../core/serviceCore"
 import {
     UserToList,
     UserDetails,
-    UserToAdd
+    UserToAdd,
+    RoleToSelect,
+    RoleMatch
 } from "./types"
 
 export function GetUsersToListAsync(isPassiveShown: boolean): Promise<GenericDataResponse<UserToList[]>> {
@@ -39,4 +41,12 @@ export function InsertAsync(userToAdd: UserDetails): Promise<Response> {
         PhoneNumber: userToAdd.phoneNumber,
         DateOfBirth: userToAdd.dateOfBirth
     });
+}
+
+export function GetRolesToSelectAsync(userId: number): Promise<GenericDataResponse<RoleToSelect[]>> {
+    return Get<GenericDataResponse<RoleToSelect[]>>('admin/user-management/roles-to-select', { UserId: userId });
+}
+
+export function GetRoleMatchingsAsync(userId: number): Promise<GenericDataResponse<RoleMatch[]>> {
+    return Get<GenericDataResponse<RoleMatch[]>>('admin/user-management/role-matchings', { UserId: userId });
 }
