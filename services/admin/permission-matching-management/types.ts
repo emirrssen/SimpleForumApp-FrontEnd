@@ -1,5 +1,4 @@
-export class PermissionMatchingForEndPoint {
-    endPointId: number = 0;
+export class PermissionMatch {
     permissionId: number = 0;
     statusId: number = 0;
     permissionName: string = "";

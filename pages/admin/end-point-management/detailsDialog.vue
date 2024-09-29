@@ -71,7 +71,7 @@
                     <AppCardFooter class="flex justify-between align-center">
                         <AppButton @click="closeDialogOnClick" title="Kapat" type="text" />
                         <div class="flex" style="gap: 12px;">
-                            <AppButton @click="openPermissionMatchingDialogOnClick" title="Yetkileri Görüntüle" type="success" />
+                            <AppButton v-if="store.currentEndPoint.id > 0" @click="openPermissionMatchingDialogOnClick" title="Yetkileri Görüntüle" type="success" />
                             <AppButton @click="saveOnClick" title="Kaydet" type="info" />
                         </div>
                     </AppCardFooter>
@@ -127,7 +127,7 @@
         layoutStore.isLoadingVisible = true;
 
         Promise.all([
-            permissionMatchingStore.getPermissionMatchings(store.currentEndPoint.id),
+            permissionMatchingStore.getPermissionMatchingsForEndPoint(store.currentEndPoint.id),
             permissionMatchingStore.getStatuses(),
             permissionMatchingStore.getUnmatchedPermissionsForEndPoint(store.currentEndPoint.id)
         ]).then(() => {

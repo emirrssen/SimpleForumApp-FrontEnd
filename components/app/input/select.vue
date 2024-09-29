@@ -69,7 +69,7 @@
     });
 
     onMounted(() => {
-        items.value = _.cloneDeep(props.items);
+        originalItems.value = _.cloneDeep(props.items);
 
         if (props.modelValue > 0) {
             searchText.value = props.items.find(x => x[props.itemValue] == props.modelValue)[props.itemText] || ""
@@ -106,7 +106,7 @@
             items.value = _.cloneDeep(originalItems.value);
         }
 
-        items.value = _.cloneDeep(props.items.filter(x => x.title.toLocaleLowerCase().includes(searchText.value.toLocaleLowerCase())))
+        items.value = _.cloneDeep(originalItems.value.filter(x => x[props.itemText].toLocaleLowerCase().includes(searchText.value.toLocaleLowerCase())))
     }
 
     function selectOnClick(id: any) {
