@@ -16,15 +16,17 @@
                     <template #leftContent>
                         <div class="flex flex-col justify-around items-center gap-2">
                             <AppButton 
-                                style="height: 38px; width: 38px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 38px; background-color: rgba(0, 0, 0, .1);" 
+                                style="height: 38px; width: 38px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 38px;" 
                                 type="icon" 
-                                icon="material-symbols:thumb-up-rounded" 
+                                icon="material-symbols:thumb-up-rounded"
+                                @click="likeOnClick(item.titleId)"
                             />
                             <div>{{ item.likeNumber }}</div>
                             <AppButton 
-                                style="height: 38px; width: 38px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 38px; background-color: rgba(0, 0, 0, .1);" 
+                                style="height: 38px; width: 38px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 38px;" 
                                 type="icon" 
-                                icon="material-symbols:thumb-down-rounded" 
+                                icon="material-symbols:thumb-down-rounded"
+                                @click="dislikeOnClick(item.titleId)"
                             />
                         </div>
                     </template>
@@ -105,6 +107,30 @@
             store.getAgenda(),
             store.getTitles()
         ]).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+    }
+
+    function likeOnClick(titleId: number) {
+        layoutStore.isLoadingVisible = true;
+
+        store.addActionToTitle(titleId, 1).then((response => {
+            if (response) {
+                store.getTitles();
+            }
+        })).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+    }
+
+    function dislikeOnClick(titleId: number) {
+        layoutStore.isLoadingVisible = true;
+
+        store.addActionToTitle(titleId, 2).then((response => {
+            if (response) {
+                store.getTitles();
+            }
+        })).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }

@@ -5,7 +5,8 @@ import {
 
 import {
     GetAgendaAsync,
-    GetTitlesAsync
+    GetTitlesAsync,
+    AddActionToTitleAsync
 } from "~/services/home/index"
 
 export const useHomeStore = defineStore('home', () => {
@@ -33,10 +34,17 @@ export const useHomeStore = defineStore('home', () => {
         }))
     }
 
+    function addActionToTitle(titleId: number, actionId: number): Promise<boolean> {
+        return AddActionToTitleAsync(actionId, titleId).then((response => {
+            return response.isSuccess;
+        }))
+    }
+
     return {
         agenda,
         titles,
         getAgenda,
-        getTitles
+        getTitles,
+        addActionToTitle
     }
 })
