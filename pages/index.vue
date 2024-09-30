@@ -11,8 +11,8 @@
                     </template>
                 </AppCard>
             </div>
-            <div class="col-span-6 flex justify-center">
-                <AppCard style="height: 200px;">
+            <div class="col-span-6 flex flex-col items-center">
+                <AppCard style="height: 180px;">
                     <template #leftContent>
                         <div class="flex flex-col justify-around items-center gap-2">
                             <AppButton 
@@ -74,6 +74,7 @@
 </template>
 
 <script lang="ts" setup>
+
     import { useLayoutStore } from '~/stores/layout';
 
     const layoutStore = useLayoutStore();
@@ -92,13 +93,10 @@
         layoutStore.isAdminButtonVisible = true;
     }
 
+    const test = ref("Test");
+
 </script>
 
 <style scoped>
-
-width: 38px;
-        height: 38px;
-        border: 1px solid rgba(0, 0, 0, .4);
-        border-radius: 30px;
 
 </style>

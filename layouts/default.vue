@@ -21,7 +21,7 @@
                 <div class="flex justify-between items-center" style="gap: 12px;" v-if="isNavbarVisible">
                     <AppNavButton v-if="isUsersButtonVisible" title="Kullanıcılar" icon="ic:baseline-supervisor-account" />
                     <AppNavButton v-if="isGroupsButtonVisible" title="Topluluklar" icon="ic:baseline-groups" />
-                    <AppNavButton v-if="isCreateTitleButtonVisible" title="Başlık Oluştur" icon="material-symbols:add" />
+                    <AppNavButton @click="openCreateTitleDialogOnClick" v-if="isCreateTitleButtonVisible" title="Başlık Oluştur" icon="material-symbols:add" />
                     <AppNavButton @click="navigateToAdminPanel" title="Admin Paneli" icon="material-symbols:dashboard" v-if="isAdminButtonVisible" />
                     <div class="relative">
                         <AppNavButton tabindex="0" @focus="btnShowMenuOnClick()" @blur="btnHideMenuOnClick" v-if="isAccountButtonVisible" title="Hesap" icon="mdi:account" />
@@ -53,9 +53,14 @@
 <script lang="ts" setup>
 
     import { useLayoutStore } from '~/stores/layout';
+    import { useCreateTitleDialogStore } from '~/stores/home/createEntryDialogStore';
+
     import { GetToken } from '~/services/core/localStoreageCore';
+import { AuthorTypes } from '~/services/home/create-title-dialog/types';
+    
 
     const store = useLayoutStore();
+    const createTitleStore = useCreateTitleDialogStore();
 
     onMounted(() => {
         GetToken().then((response => {
@@ -122,6 +127,11 @@
 
     function logOutOnClick() {
         store.logOut();
+    }
+
+    function openCreateTitleDialogOnClick() {
+        createTitleStore.authorTypeId = AuthorTypes.User;
+        createTitleStore.isDialogVisible = true;
     }
 
 </script>
