@@ -30,3 +30,7 @@ export function UpdateByIdAsync(role: Role): Promise<Response> {
         Description: role.description
     });
 }
+
+export function CanEnter(): Promise<Response> {
+    return Get<Response>('admin/role-management/can-enter');
+}

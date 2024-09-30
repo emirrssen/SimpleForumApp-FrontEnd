@@ -4,7 +4,8 @@ import {
 } from "~/services/admin/permission-management/types"
 
 import {
-    GetPermissionsByStatusAsync
+    GetPermissionsByStatusAsync,
+    CanEnter
 } from "~/services/admin/permission-management/index"
 
 export const useAdminPermissionManagementStore = defineStore('admin-permission-management', () => {
@@ -23,9 +24,16 @@ export const useAdminPermissionManagementStore = defineStore('admin-permission-m
         }))
     }
 
+    function canEnter(): Promise<boolean> {
+        return CanEnter().then((response => {
+            return response.isSuccess;
+        }))
+    }
+
     return {
         permissions,
         isPassiveShown,
-        getPermissions
+        getPermissions,
+        canEnter
     }
 })

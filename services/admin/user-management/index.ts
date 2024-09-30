@@ -69,3 +69,7 @@ export function UpdateRoleMatchingsAsync(itemsToUpdate: RoleMatch[], userId: num
         })
     })
 }
+
+export function CanEnter(): Promise<Response> {
+    return Get<Response>('admin/user-management/can-enter');
+}

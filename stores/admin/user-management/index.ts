@@ -1,5 +1,6 @@
 import {
-    GetUsersToListAsync
+    GetUsersToListAsync,
+    CanEnter
 } from "~/services/admin/user-management/index"
 
 import {
@@ -20,9 +21,16 @@ export const useAdminUserManagementStore = defineStore('admin-user-management', 
         }))
     }
 
+    function canEnter(): Promise<boolean> {
+        return CanEnter().then((response => {
+            return response.isSuccess;
+        }))
+    }
+
     return {
         userToList,
         isPassiveShown,
-        getUsersToList
+        getUsersToList,
+        canEnter
     }
 })

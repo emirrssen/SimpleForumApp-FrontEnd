@@ -3,7 +3,8 @@ import {
 } from "~/services/admin/role-management/types";
 
 import {
-    GetAllDetailsByStatusAsync
+    GetAllDetailsByStatusAsync,
+    CanEnter
 } from "~/services/admin/role-management/index";
 
 export const useAdminRoleManagementStore = defineStore('admin-role-management', () => {
@@ -20,9 +21,16 @@ export const useAdminRoleManagementStore = defineStore('admin-role-management', 
         }))
     }
 
+    function canEnter(): Promise<boolean> {
+        return CanEnter().then((response => {
+            return response.isSuccess
+        }))
+    }
+
     return {
         isPassiveShown,
         roles,
-        getRoles
+        getRoles,
+        canEnter
     }
 })

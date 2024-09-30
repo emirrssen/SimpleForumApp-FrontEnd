@@ -20,6 +20,9 @@ export const useLayoutStore = defineStore('layout', () => {
 
     function logOut() {
         SetToken("").then(() => {
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("expirationDate");
+            localStorage.removeItem("refreshTokenExpirationDate");
             isLoggedIn.value = false;
             isAccountMenuVisible.value = false;
             navigateTo("");

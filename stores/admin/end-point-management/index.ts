@@ -4,7 +4,8 @@ import {
 } from "~/services/admin/end-point-management/types"
 
 import {
-    GetAllDetailsAsync
+    GetAllDetailsAsync,
+    CanEnter
 } from "~/services/admin/end-point-management/index"
 
 export const useAdminEndPointManagementStore = defineStore('admin-end-point-management', () => {
@@ -24,10 +25,17 @@ export const useAdminEndPointManagementStore = defineStore('admin-end-point-mana
         }))
     }
 
+    function canEnter(): Promise<boolean> {
+        return CanEnter().then((response => {
+            return response.isSuccess;
+        }))
+    }
+
     return {
         endPoints,
         selectedEndPointGroup,
         selectedControllerName,
-        getEndPointsByStatus
+        getEndPointsByStatus,
+        canEnter
     }
 })

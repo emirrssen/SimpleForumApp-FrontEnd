@@ -65,9 +65,13 @@
     function setSelectedPageToUserManagement() {
         layoutStore.isLoadingVisible = true;
 
-        userManagementStore.getUsersToList().then(() => {
-            adminStore.selectedPage = SelectedAdminPage.UserManagement;
-        }).finally(() => {
+        userManagementStore.canEnter().then((response => {
+            if (response) {
+                userManagementStore.getUsersToList().then(() => {
+                    adminStore.selectedPage = SelectedAdminPage.UserManagement;
+                })
+            }
+        })).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }
@@ -75,9 +79,13 @@
     function setSelectedPageToRoleManagement() {
         layoutStore.isLoadingVisible = true;
 
-        roleManagementStore.getRoles().then(() => {
-            adminStore.selectedPage = SelectedAdminPage.RoleManagement;
-        }).finally(() => {
+        roleManagementStore.canEnter().then((response => {
+            if (response) {
+                roleManagementStore.getRoles().then(() => {
+                    adminStore.selectedPage = SelectedAdminPage.RoleManagement;
+                })
+            }
+        })).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }
@@ -85,20 +93,27 @@
     function setSelectedPageToEndPointManagement() {
         layoutStore.isLoadingVisible = true;
 
-        endPointManagementStore.getEndPointsByStatus().then(() => {
-            adminStore.selectedPage = SelectedAdminPage.EndPointManagement;
+        endPointManagementStore.canEnter().then((response) => {
+            if (response) {
+                endPointManagementStore.getEndPointsByStatus().then(() => {
+                    adminStore.selectedPage = SelectedAdminPage.EndPointManagement;
+                })
+            }
         }).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
-
     }
 
     function setSelectedPageToPermissionManagement() {
         layoutStore.isLoadingVisible = true;
 
-        permissionManagementStore.getPermissions().then(() => {
-            adminStore.selectedPage = SelectedAdminPage.PermissionManagement
-        }).finally(() => {
+        permissionManagementStore.canEnter().then((response => {
+            if (response) {
+                permissionManagementStore.getPermissions().then(() => {
+                    adminStore.selectedPage = SelectedAdminPage.PermissionManagement
+                })
+            }
+        })).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }
