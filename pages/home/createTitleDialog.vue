@@ -21,15 +21,18 @@
 <script lang="ts" setup>
 
     import { TitleToAddOrUpdate } from '~/services/home/create-title-dialog/types';
-    
+
     import { useCreateTitleDialogStore } from '~/stores/home/createEntryDialogStore';
     import { useLayoutStore } from '~/stores/layout';
+    import { useHomeStore } from '~/stores/home';
 
     const store = useCreateTitleDialogStore();
     const layoutStore = useLayoutStore();
+    const homeStore = useHomeStore();
 
     function closeDialogOnClick() {
         store.isDialogVisible = false;
+        store.currentTitle = new TitleToAddOrUpdate();
     }
 
     function saveOnClick() {
@@ -39,6 +42,8 @@
             if (response) {
                 store.isDialogVisible = false;
                 store.currentTitle = new TitleToAddOrUpdate();
+                homeStore.getAgenda();
+                homeStore.getTitles();
             }
         })).finally(() => {
             layoutStore.isLoadingVisible = false;

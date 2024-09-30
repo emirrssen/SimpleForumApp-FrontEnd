@@ -104,9 +104,9 @@ async function HandleTokenExpiration(): Promise<void> {
             }
         }))
     } else {
-        localStorage.removeItem("expirationDate");
-        localStorage.removeItem("refreshTokenExpirationDate");
-        localStorage.removeItem("token");
+        await localStorage.removeItem("expirationDate");
+        await localStorage.removeItem("refreshTokenExpirationDate");
+        await localStorage.removeItem("token");
         toast.warning("Oturumunuzun süresi dolmuştur. Kaldığınız yerden devam edebilmek için lütfen tekrar oturum açınız.")
         isLoginDialogVisible.value = true;
     }

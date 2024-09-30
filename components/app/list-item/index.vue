@@ -7,7 +7,7 @@
             <div class="left-content-numbered-wrapper" v-if="isTypeNumbered">
                 <div class="content-numbered">{{ value }}</div>
             </div>
-            <div class="px-3 py-2">
+            <div class="px-3 py-2 title">
                 {{ $props.title }}
             </div>
         </div>
@@ -41,7 +41,7 @@
 <style scoped>
 
     .app-list-item {
-        height: 40px;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: start;
@@ -49,7 +49,12 @@
         user-select: none;
         background-color: rgba(170, 215, 217, .7);
         border-radius: 6px;
+    }
+
+    .title {
+        word-break: keep-all;
         overflow: hidden;
+        height: 100%;
     }
 
     .app-list-item:hover {

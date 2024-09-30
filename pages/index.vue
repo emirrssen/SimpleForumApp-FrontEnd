@@ -5,14 +5,14 @@
                 <AppCard>
                     <template #centerContent>
                         <AppCardHeader class="flex justify-center text-xl">Gündem</AppCardHeader>
-                        <AppCardBody>
-                            <AppListItem type="data" value="16" class="w-full" title="Test" />
+                        <AppCardBody class="flex flex-col gap-4 items-center">
+                            <AppListItem v-for="item in store.agenda" :key="item.titleId" class="w-full" :title="item.titleSubject" />
                         </AppCardBody>
                     </template>
                 </AppCard>
             </div>
             <div class="col-span-6 flex flex-col items-center">
-                <AppCard style="height: 180px;">
+                <AppCard style="width: 100%;" v-for="item in store.titles" :key="item.titleId" class="mb-3">
                     <template #leftContent>
                         <div class="flex flex-col justify-around items-center gap-2">
                             <AppButton 
@@ -20,7 +20,7 @@
                                 type="icon" 
                                 icon="material-symbols:thumb-up-rounded" 
                             />
-                            <div>3892</div>
+                            <div>{{ item.likeNumber }}</div>
                             <AppButton 
                                 style="height: 38px; width: 38px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 38px; background-color: rgba(0, 0, 0, .1);" 
                                 type="icon" 
@@ -30,15 +30,15 @@
                     </template>
                     <template #centerContent>
                         <AppCardHeader class="flex justify-between">
-                            <span class="text-lg">Test</span>
-                            <span class="text-sm">12.03.2024</span>
+                            <span class="text-lg">{{ item.titleSubject }}</span>
+                            <span class="text-sm">{{ item.createdDate }}</span>
                         </AppCardHeader>
                         <AppCardBody class="w-full">
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vel, consequatur? Cumque, quisquam necessitatibus harum suscipit consequatur ut sunt commodi repellendus porro eum modi eveniet quia provident est reprehenderit dignissimos mollitia!
+                            {{ item.titleContent }}
                         </AppCardBody>
                         <AppCardFooter class="flex justify-between mt-3">
                             <AppButton type="success" title="Entry Gir" />
-                            <span>Kullanıcı 7</span>
+                            <span>{{ item.createdAuthor }}</span>
                         </AppCardFooter>
                     </template>
                 </AppCard>
@@ -76,10 +76,15 @@
 <script lang="ts" setup>
 
     import { useLayoutStore } from '~/stores/layout';
+    import { useHomeStore } from '~/stores/home';
 
     const layoutStore = useLayoutStore();
+    const store = useHomeStore();
 
-    onMounted(setStoreOnMounted);
+    onMounted(() => {
+        setStoreOnMounted();
+        loadOnMounted();
+    });
 
     function setStoreOnMounted() {
         layoutStore.isAccountMenuVisible = false;
@@ -93,7 +98,16 @@
         layoutStore.isAdminButtonVisible = true;
     }
 
-    const test = ref("Test");
+    function loadOnMounted() {
+        layoutStore.isLoadingVisible = true;
+
+        Promise.all([
+            store.getAgenda(),
+            store.getTitles()
+        ]).finally(() => {
+            layoutStore.isLoadingVisible = false;
+        })
+    }
 
 </script>
 
