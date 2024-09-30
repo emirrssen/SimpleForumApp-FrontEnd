@@ -21,8 +21,8 @@
                 <div class="flex justify-between items-center" style="gap: 12px;" v-if="isNavbarVisible">
                     <AppNavButton v-if="isUsersButtonVisible" title="Kullanıcılar" icon="ic:baseline-supervisor-account" />
                     <AppNavButton v-if="isGroupsButtonVisible" title="Topluluklar" icon="ic:baseline-groups" />
-                    <AppNavButton v-if="isCreateTitleButtonVisible" title="Başlık Oluştur" icon="bi:plus-circle" />
-                    <AppNavButton @click="navigateToAdminPanel" title="Admin Paneli" icon="bi:plus-circle" v-if="isAdminButtonVisible" />
+                    <AppNavButton v-if="isCreateTitleButtonVisible" title="Başlık Oluştur" icon="material-symbols:add" />
+                    <AppNavButton @click="navigateToAdminPanel" title="Admin Paneli" icon="material-symbols:dashboard" v-if="isAdminButtonVisible" />
                     <div class="relative">
                         <AppNavButton tabindex="0" @focus="btnShowMenuOnClick()" @blur="btnHideMenuOnClick" v-if="isAccountButtonVisible" title="Hesap" icon="mdi:account" />
                         <AppMenu 
