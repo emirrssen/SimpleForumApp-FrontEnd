@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-center" style="margin-top: 15vh">
+    <AppDialog v-model="isLoginDialogVisible" style="z-index: 9999;">
         <AppCard style="width: 500px;">
             <template #centerContent>
                 <AppCardHeader>Giriş Yap</AppCardHeader>
@@ -17,13 +17,14 @@
                 </AppCardFooter>
             </template>
         </AppCard>
-    </div>
+    </AppDialog>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup> 
+
+    import { isLoginDialogVisible } from '~/services/core/serviceCore';
     import { useLayoutStore } from '~/stores/layout';
     import { useLoginStore } from '~/stores/auth/login';
-    import { ref } from 'vue';
 
     const layoutStore = useLayoutStore();
     const loginStore = useLoginStore();
@@ -32,7 +33,6 @@
 
     onMounted(() => {
         clearDataOnMounted();
-        layoutStore.isNavbarVisible = false;
     })
 
     const email = computed({
@@ -56,11 +56,9 @@
     function loginOnClick() {
         layoutStore.isLoadingVisible = true;
 
-        loginStore.Login().then((response) => {
-            if (response === 1) {
-                layoutStore.isLoggedIn = true;
-                navigateTo("")
-            }
+        loginStore.Login().then(() => {
+            layoutStore.isLoggedIn = true;
+            isLoginDialogVisible.value = false;
         }).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
@@ -80,3 +78,6 @@
     }
 
 </script>
+
+<style scoped>
+</style>

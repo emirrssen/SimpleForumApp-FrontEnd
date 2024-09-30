@@ -21,13 +21,13 @@
                                 <AppButton @click="addOnClick" title="Ekle" type="success" />
                             </div>
                         </div>
-                        <div class="flex flex-col mt-3">
+                        <div class="flex flex-col mt-3" style=" max-height: 400px; overflow-y: auto;">
                             <span style="font-size: 20px;" class="mb-3">Mevcut Eşleştirmeler</span>
                             <AppAlert type="success" text="Henüz bir eşleştirme yapılmamış" v-if="store.roleMatchings.length === 0" />
                             <div 
                                 class="flex p-2 mb-2" 
                                 v-for="item in store.roleMatchings" :key="item.roleId"
-                                style="border: 1px solid rgba(0, 0, 0, .3); border-radius: 4px; max-height: 600px; overflow-y: auto;"
+                                style="border: 1px solid rgba(0, 0, 0, .3); border-radius: 4px;"
                             >
                                 <div class="grid grid-cols-4 gap-4">
                                     <div class="col-span-3 flex items-center">

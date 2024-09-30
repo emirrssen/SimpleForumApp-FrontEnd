@@ -23,3 +23,7 @@ export function UpdateByIdAsync(endPointToUpdate: EndPointToUpdate): Promise<Res
         Description: endPointToUpdate.description
     });
 }
+
+export function CanEnter(): Promise<Response> {
+    return Get<Response>('admin/end-point-management/can-enter');
+}

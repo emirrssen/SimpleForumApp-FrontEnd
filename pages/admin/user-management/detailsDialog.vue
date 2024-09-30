@@ -26,7 +26,7 @@
                     <AppCardFooter class="flex justify-between align-center">
                         <AppButton @click="closeDialogOnClick" title="Kapat" type="text" />
                         <div class="flex" style="gap: 12px;">
-                            <AppButton v-if="store.currentUser.id > 0" @click="openRoleMatchingDialogOnClick" title="Yetkileri Görüntüle" type="success" />
+                            <AppButton v-if="store.currentUser.id > 0" @click="openRoleMatchingDialogOnClick" title="Rolleri Görüntüle" type="success" />
                             <AppButton @click="saveOnClick" title="Kaydet" type="info" />
                         </div>
                     </AppCardFooter>

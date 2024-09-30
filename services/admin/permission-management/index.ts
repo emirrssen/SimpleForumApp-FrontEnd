@@ -30,3 +30,7 @@ export function UpdateByIdAsync(permissionToUpdate: Permission): Promise<Respons
         Description: permissionToUpdate.description
     });
 }
+
+export function CanEnter(): Promise<Response> {
+    return Get<Response>('admin/permission-management/can-enter');
+}
