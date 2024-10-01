@@ -1,18 +1,21 @@
 import {
     AgendaItem,
-    TitlePreview
+    TitlePreview,
+    WeeklyFavouriteTitle
 } from "~/services/home/types"
 
 import {
     GetAgendaAsync,
     GetTitlesAsync,
-    AddActionToTitleAsync
+    AddActionToTitleAsync,
+    GetWeeklyFavouriteTitlesAsync
 } from "~/services/home/index"
 
 export const useHomeStore = defineStore('home', () => {
 
     const agenda: Ref<AgendaItem[]> = ref([]);
     const titles: Ref<TitlePreview[]> = ref([]);
+    const weeklyFavouriteTitles: Ref<WeeklyFavouriteTitle[]> = ref([]);
 
     function getAgenda(): Promise<void> {
         return GetAgendaAsync().then((response => {
@@ -40,11 +43,23 @@ export const useHomeStore = defineStore('home', () => {
         }))
     }
 
+    function getWeeklyFavouriteTitles(): Promise<void> {
+        return GetWeeklyFavouriteTitlesAsync().then((response => {
+            if (response.isSuccess && response.data) {
+                weeklyFavouriteTitles.value = response.data
+            } else {
+                weeklyFavouriteTitles.value = [];
+            }
+        }))
+    }
+
     return {
         agenda,
         titles,
+        weeklyFavouriteTitles,
         getAgenda,
         getTitles,
-        addActionToTitle
+        addActionToTitle,
+        getWeeklyFavouriteTitles
     }
 })

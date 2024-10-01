@@ -104,11 +104,15 @@ async function HandleTokenExpiration(): Promise<void> {
             }
         }))
     } else {
-        await localStorage.removeItem("expirationDate");
-        await localStorage.removeItem("refreshTokenExpirationDate");
-        await localStorage.removeItem("token");
-        toast.warning("Oturumunuzun süresi dolmuştur. Kaldığınız yerden devam edebilmek için lütfen tekrar oturum açınız.")
-        isLoginDialogVisible.value = true;
+        if (localStorage.getItem("token")?.length === 0) {
+            navigateTo("login")
+        } else {
+            await localStorage.removeItem("expirationDate");
+            await localStorage.removeItem("refreshTokenExpirationDate");
+            await localStorage.removeItem("token");
+            toast.warning("Oturumunuzun süresi dolmuştur. Kaldığınız yerden devam edebilmek için lütfen tekrar oturum açınız.")
+            isLoginDialogVisible.value = true;
+        }
     }
 
     return Promise.resolve();
@@ -119,6 +123,11 @@ function CheckTokenExpiration(): boolean {
     const now = new Date();
     
     const accessTokenExpirationDateString = localStorage.getItem("expirationDate");
+
+    if (!accessTokenExpirationDateString || (accessTokenExpirationDateString && accessTokenExpirationDateString.length === 0)) {
+        return true;
+    }
+
     const accessTokenExpirationDate = new Date(accessTokenExpirationDateString || "");
 
     return accessTokenExpirationDate < now;

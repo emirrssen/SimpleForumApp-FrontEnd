@@ -6,25 +6,27 @@
                     <template #centerContent>
                         <AppCardHeader class="flex justify-center text-xl">Gündem</AppCardHeader>
                         <AppCardBody class="flex flex-col gap-4 items-center">
-                            <AppListItem v-for="item in store.agenda" :key="item.titleId" class="w-full" :title="item.titleSubject" />
+                            <AppListItemData v-for="item in store.agenda" :key="item.titleId" :value="item.entryNumber" class="w-full" :title="item.titleSubject" />
                         </AppCardBody>
                     </template>
                 </AppCard>
             </div>
-            <div class="col-span-6 flex flex-col items-center">
+            <div class="col-span-6 flex flex-col items-center pr-4" style="max-height: calc(100vh - 72px); overflow-y: auto;">
                 <AppCard style="width: 100%;" v-for="item in store.titles" :key="item.titleId" class="mb-3">
                     <template #leftContent>
                         <div class="flex flex-col justify-around items-center gap-2">
                             <AppButton 
-                                style="height: 38px; width: 38px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 38px;" 
+                                style="height: 38px; width: 38px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 38px;"
+                                :class="{ 'liked': item.actionId === 1 }"
                                 type="icon" 
                                 icon="material-symbols:thumb-up-rounded"
                                 @click="likeOnClick(item.titleId)"
                             />
                             <div>{{ item.likeNumber }}</div>
                             <AppButton 
-                                style="height: 38px; width: 38px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 38px;" 
-                                type="icon" 
+                                style="height: 38px; width: 38px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 38px;"
+                                :class="{ 'disliked': item.actionId === 2 }"
+                                type="icon"
                                 icon="material-symbols:thumb-down-rounded"
                                 @click="dislikeOnClick(item.titleId)"
                             />
@@ -49,8 +51,8 @@
                 <AppCard>
                     <template #centerContent>
                         <AppCardHeader class="text-xl">Bu Hafta Öne Çıkan Başlıklar</AppCardHeader>
-                        <AppCardBody>
-                            <AppListItem type="numbered" value="1" title="Test" class="w-full" />
+                        <AppCardBody class="flex flex-col gap-4">
+                            <AppListItemNumbered v-for="(item, index) in store.weeklyFavouriteTitles" :key="item.titleId" :value="index + 1 + ''" :title="item.titleSubject" class="w-full" />
                         </AppCardBody>
                     </template>
                 </AppCard>
@@ -105,38 +107,40 @@
 
         Promise.all([
             store.getAgenda(),
-            store.getTitles()
+            store.getTitles(),
+            store.getWeeklyFavouriteTitles()
         ]).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
     }
 
     function likeOnClick(titleId: number) {
-        layoutStore.isLoadingVisible = true;
-
         store.addActionToTitle(titleId, 1).then((response => {
             if (response) {
                 store.getTitles();
             }
-        })).finally(() => {
-            layoutStore.isLoadingVisible = false;
-        })
+        }))
     }
 
     function dislikeOnClick(titleId: number) {
-        layoutStore.isLoadingVisible = true;
-
         store.addActionToTitle(titleId, 2).then((response => {
             if (response) {
                 store.getTitles();
             }
-        })).finally(() => {
-            layoutStore.isLoadingVisible = false;
-        })
+        }))
     }
 
 </script>
 
 <style scoped>
+
+    .liked {
+        background-color: rgba(26, 203, 91, 0.4);
+    }
+
+    .disliked {
+        background-color: rgba(229, 18, 18, 0.4);
+    }
+
 
 </style>

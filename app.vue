@@ -30,4 +30,24 @@
     height: 100vh;
   }
 
+  ::-webkit-scrollbar {
+      width: 6px;
+      height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 10px; 
+  }
+
+  
+  ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+  }
+
 </style>

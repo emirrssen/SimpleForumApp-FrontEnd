@@ -3,7 +3,8 @@ import { Get, Post, Put } from "../core/serviceCore"
 
 import {
     AgendaItem,
-    TitlePreview
+    TitlePreview,
+    WeeklyFavouriteTitle
 } from "./types"
 
 export function GetAgendaAsync(): Promise<GenericDataResponse<AgendaItem[]>> {
@@ -12,6 +13,10 @@ export function GetAgendaAsync(): Promise<GenericDataResponse<AgendaItem[]>> {
 
 export function GetTitlesAsync(): Promise<GenericDataResponse<TitlePreview[]>> {
     return Get<GenericDataResponse<TitlePreview[]>>('home/titles');
+}
+
+export function GetWeeklyFavouriteTitlesAsync(): Promise<GenericDataResponse<WeeklyFavouriteTitle[]>> {
+    return Get<GenericDataResponse<WeeklyFavouriteTitle[]>>('home/weekly-favourite-titles');
 }
 
 export function AddActionToTitleAsync(actionId: number, titleId: number): Promise<Response> {
