@@ -41,7 +41,10 @@
                             {{ item.titleContent }}
                         </AppCardBody>
                         <AppCardFooter class="flex justify-between mt-3">
-                            <AppButton type="success" title="Entry Gir" />
+                            <div class="flex gap-3">
+                                <AppButton @click="openAddEntryDialogOnClick(item.titleId)" type="success" title="Entry Gir" />
+                                <AppButton type="info" title="Başlığı Görüntüle" />
+                            </div>
                             <span>{{ item.createdAuthor }}</span>
                         </AppCardFooter>
                     </template>
@@ -75,15 +78,20 @@
             </div>
         </div>
     </div>
+    <AddEntryDialog />
 </template>
 
 <script lang="ts" setup>
 
     import { useLayoutStore } from '~/stores/layout';
     import { useHomeStore } from '~/stores/home';
+    import { useAddEntryDialogStore } from '~/stores/home/addEntryDialogStore';
+
+    import AddEntryDialog from './home/addEntryDialog.vue';
 
     const layoutStore = useLayoutStore();
     const store = useHomeStore();
+    const addEntryDialog = useAddEntryDialogStore();
 
     onMounted(() => {
         setStoreOnMounted();
@@ -118,6 +126,7 @@
         store.addActionToTitle(titleId, 1).then((response => {
             if (response) {
                 store.getTitles();
+                store.getWeeklyFavouriteTitles();
             }
         }))
     }
@@ -126,8 +135,15 @@
         store.addActionToTitle(titleId, 2).then((response => {
             if (response) {
                 store.getTitles();
+                store.getWeeklyFavouriteTitles();
             }
         }))
+    }
+
+    function openAddEntryDialogOnClick(titleId: number) {
+        addEntryDialog.currentTitle = titleId;
+        addEntryDialog.currentAuthorType = 1;
+        addEntryDialog.isDialogVisible = true;
     }
 
 </script>

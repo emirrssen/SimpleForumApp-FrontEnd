@@ -25,3 +25,11 @@ export function AddActionToTitleAsync(actionId: number, titleId: number): Promis
         TitleId: titleId
     })
 }
+
+export function AddEntryToTitleAsync(authorTypeId: number, entry: string, titleId: number): Promise<Response> {
+    return Post<Response>('home/add-entry-to-title', {}, {
+        TitleId: titleId,
+        Entry: entry,
+        AuthorTypeId: authorTypeId
+    });
+}
