@@ -75,6 +75,7 @@ function ErrorResponseHandler(error: any) {
 async function HandleTokenExpiration(): Promise<void> {
 
     const now = new Date();
+    const route = useRoute();
 
     const refreshTokenExpirationString = localStorage.getItem("refreshTokenExpirationDate");
     const refreshTokenExpirationDate = new Date(refreshTokenExpirationString || "");
@@ -104,12 +105,15 @@ async function HandleTokenExpiration(): Promise<void> {
             }
         }))
     } else {
-        if (localStorage.getItem("token")?.length === 0) {
-            navigateTo("login")
-        } else {
-            await localStorage.removeItem("expirationDate");
-            await localStorage.removeItem("refreshTokenExpirationDate");
-            await localStorage.removeItem("token");
+        if (localStorage.getItem("token")?.length === 0 && route.name === 'auth-login' || route.name === 'index') {
+            navigateTo("/auth/login")
+        } else if (localStorage.getItem("token")?.length === 0 && route.name !== 'auth-login' && route.name !== 'index') {
+            return;
+        }
+         else {
+            localStorage.removeItem("expirationDate");
+            localStorage.removeItem("refreshTokenExpirationDate");
+            localStorage.removeItem("token");
             toast.warning("Oturumunuzun süresi dolmuştur. Kaldığınız yerden devam edebilmek için lütfen tekrar oturum açınız.")
             isLoginDialogVisible.value = true;
         }

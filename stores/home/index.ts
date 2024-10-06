@@ -1,14 +1,19 @@
 import {
     AgendaItem,
     TitlePreview,
-    WeeklyFavouriteTitle
+    WeeklyFavouriteTitle,
+    WeeklyFavouriteGroup,
+    WeeklyFavouriteAuthor
 } from "~/services/home/types"
 
 import {
     GetAgendaAsync,
     GetTitlesAsync,
     AddActionToTitleAsync,
-    GetWeeklyFavouriteTitlesAsync
+    GetWeeklyFavouriteTitlesAsync,
+    GetWeeklyFavouriteGroupsAsync,
+    GetWeeklyFavouriteAuthorsAsync,
+    CanEnter
 } from "~/services/home/index"
 
 export const useHomeStore = defineStore('home', () => {
@@ -16,6 +21,8 @@ export const useHomeStore = defineStore('home', () => {
     const agenda: Ref<AgendaItem[]> = ref([]);
     const titles: Ref<TitlePreview[]> = ref([]);
     const weeklyFavouriteTitles: Ref<WeeklyFavouriteTitle[]> = ref([]);
+    const weeklyFavouriteGroups: Ref<WeeklyFavouriteGroup[]> = ref([]);
+    const weeklyFavouriteAuthors: Ref<WeeklyFavouriteAuthor[]> = ref([]);
 
     function getAgenda(): Promise<void> {
         return GetAgendaAsync().then((response => {
@@ -53,13 +60,44 @@ export const useHomeStore = defineStore('home', () => {
         }))
     }
 
+    function getWeeklyFavouriteGroups(): Promise<void> {
+        return GetWeeklyFavouriteGroupsAsync().then((response => {
+            if (response.isSuccess && response.data) {
+                weeklyFavouriteGroups.value = response.data
+            } else {
+                weeklyFavouriteGroups.value = [];
+            }
+        }))
+    }
+
+    function getWeeklyFavouriteAuthors(): Promise<void> {
+        return GetWeeklyFavouriteAuthorsAsync().then((response => {
+            if (response.isSuccess && response.data) {
+                weeklyFavouriteAuthors.value = response.data
+            } else {
+                weeklyFavouriteAuthors.value = [];
+            }
+        }))
+    }
+
+    function canEnter(): Promise<boolean> {
+        return CanEnter().then((response => {
+            return response.isSuccess;
+        }))
+    }
+
     return {
         agenda,
         titles,
         weeklyFavouriteTitles,
+        weeklyFavouriteGroups,
+        weeklyFavouriteAuthors,
         getAgenda,
         getTitles,
         addActionToTitle,
-        getWeeklyFavouriteTitles
+        getWeeklyFavouriteTitles,
+        getWeeklyFavouriteGroups,
+        getWeeklyFavouriteAuthors,
+        canEnter
     }
 })

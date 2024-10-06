@@ -4,7 +4,9 @@ import { Get, Post, Put } from "../core/serviceCore"
 import {
     AgendaItem,
     TitlePreview,
-    WeeklyFavouriteTitle
+    WeeklyFavouriteTitle,
+    WeeklyFavouriteGroup,
+    WeeklyFavouriteAuthor
 } from "./types"
 
 export function GetAgendaAsync(): Promise<GenericDataResponse<AgendaItem[]>> {
@@ -17,6 +19,14 @@ export function GetTitlesAsync(): Promise<GenericDataResponse<TitlePreview[]>> {
 
 export function GetWeeklyFavouriteTitlesAsync(): Promise<GenericDataResponse<WeeklyFavouriteTitle[]>> {
     return Get<GenericDataResponse<WeeklyFavouriteTitle[]>>('home/weekly-favourite-titles');
+}
+
+export function GetWeeklyFavouriteGroupsAsync(): Promise<GenericDataResponse<WeeklyFavouriteGroup[]>> {
+    return Get<GenericDataResponse<WeeklyFavouriteGroup[]>>('home/weekly-favourite-groups');
+}
+
+export function GetWeeklyFavouriteAuthorsAsync(): Promise<GenericDataResponse<WeeklyFavouriteAuthor[]>> {
+    return Get<GenericDataResponse<WeeklyFavouriteAuthor[]>>('home/weekly-favourite-authors');
 }
 
 export function AddActionToTitleAsync(actionId: number, titleId: number): Promise<Response> {
@@ -32,4 +42,8 @@ export function AddEntryToTitleAsync(authorTypeId: number, entry: string, titleI
         Entry: entry,
         AuthorTypeId: authorTypeId
     });
+}
+
+export function CanEnter(): Promise<Response> {
+    return Get<Response>('home/can-enter');
 }

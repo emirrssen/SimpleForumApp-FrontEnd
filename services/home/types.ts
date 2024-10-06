@@ -42,3 +42,21 @@ export class WeeklyFavouriteTitle {
         Object.assign(this, fields);
     }
 }
+
+export class WeeklyFavouriteGroup {
+    groupId: number = 0;
+    groupName: string = "";
+
+    constructor(fields?: { groupId: number, groupName: string }) {
+        Object.assign(this, fields);
+    }
+}
+
+export class WeeklyFavouriteAuthor {
+    authorId: number = 0;
+    username: string = ""
+
+    constructor(fields?: { authorId: number, username: string }) {
+        Object.assign(this, fields);
+    }
+}

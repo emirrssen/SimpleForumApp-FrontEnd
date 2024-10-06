@@ -127,6 +127,7 @@ import { AuthorTypes } from '~/services/home/create-title-dialog/types';
 
     function logOutOnClick() {
         store.logOut();
+        navigateTo("auth/login");
     }
 
     function openCreateTitleDialogOnClick() {

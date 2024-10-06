@@ -62,16 +62,16 @@
                 <AppCard>
                     <template #centerContent>
                         <AppCardHeader class="text-xl">Bu Hafta Öne Çıkan Topluluklar</AppCardHeader>
-                        <AppCardBody>
-                            <AppListItem type="numbered" value="1" title="Grup 1" class="w-full" />
+                        <AppCardBody class="flex flex-col gap-4">
+                            <AppListItemNumbered v-for="(item, index) in store.weeklyFavouriteGroups" :key="item.groupId" :value="index + 1 + ''" :title="item.groupName" class="w-full" />
                         </AppCardBody>
                     </template>
                 </AppCard>
                 <AppCard>
                     <template #centerContent>
                         <AppCardHeader class="text-xl">Bu Hafta Öne Çıkan Yazarlar</AppCardHeader>
-                        <AppCardBody>
-                            <AppListItem type="numbered" value="1" title="Yazar 1" class="w-full" />
+                        <AppCardBody class="flex flex-col gap-4"> 
+                            <AppListItemNumbered v-for="(item, index) in store.weeklyFavouriteAuthors" :key="item.authorId" :value="index + 1 + ''" :title="item.username" class="w-full" />
                         </AppCardBody>
                     </template>
                 </AppCard>
@@ -94,8 +94,10 @@
     const addEntryDialog = useAddEntryDialogStore();
 
     onMounted(() => {
-        setStoreOnMounted();
-        loadOnMounted();
+        store.canEnter().then(() => {
+            setStoreOnMounted();
+            loadOnMounted();
+        })
     });
 
     function setStoreOnMounted() {
@@ -116,7 +118,9 @@
         Promise.all([
             store.getAgenda(),
             store.getTitles(),
-            store.getWeeklyFavouriteTitles()
+            store.getWeeklyFavouriteTitles(),
+            store.getWeeklyFavouriteGroups(),
+            store.getWeeklyFavouriteAuthors()
         ]).finally(() => {
             layoutStore.isLoadingVisible = false;
         })
@@ -127,6 +131,7 @@
             if (response) {
                 store.getTitles();
                 store.getWeeklyFavouriteTitles();
+                store.getWeeklyFavouriteAuthors();
             }
         }))
     }
@@ -136,6 +141,7 @@
             if (response) {
                 store.getTitles();
                 store.getWeeklyFavouriteTitles();
+                store.getWeeklyFavouriteAuthors();
             }
         }))
     }

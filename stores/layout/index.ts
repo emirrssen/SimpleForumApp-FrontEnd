@@ -25,7 +25,6 @@ export const useLayoutStore = defineStore('layout', () => {
             localStorage.removeItem("refreshTokenExpirationDate");
             isLoggedIn.value = false;
             isAccountMenuVisible.value = false;
-            navigateTo("");
             toast.success("Çıkış Başarılı");
         })
     }
