@@ -1,7 +1,9 @@
 <template>
     <div>
-        <div class="app-list-item px-3 py-2">
-            {{ $props.title }}
+        <div class="app-list-item">
+            <div class="px-3 py-2 title">
+                {{ $props.title }}
+            </div>
         </div>
     </div>
 </template>
@@ -12,6 +14,10 @@
         title: {
             type: String,
             required: true
+        },
+        value: {
+            type: String,
+            required: false
         }
     })
 
@@ -20,6 +26,7 @@
 <style scoped>
 
     .app-list-item {
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: start;
@@ -27,7 +34,12 @@
         user-select: none;
         background-color: rgba(170, 215, 217, .7);
         border-radius: 6px;
+    }
+
+    .title {
+        word-break: keep-all;
         overflow: hidden;
+        height: 100%;
     }
 
     .app-list-item:hover {

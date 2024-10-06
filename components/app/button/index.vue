@@ -10,7 +10,6 @@
             isTypePlain ? 'app-button-plain' : '',
             isTypeIcon ? 'app-button-icon' : ''
         ]"
-        style="height: 30px;"
     >
         <span v-if="!isTypeIcon">{{ $props.title }}</span>
         <Icon v-if="isTypeIcon" :name="$props.icon || ''" />
@@ -50,6 +49,7 @@
         border: 1px solid transparent;
         border-radius: 5px;
         user-select: none;
+        height: 30px;
     }
 
     .app-button:hover {

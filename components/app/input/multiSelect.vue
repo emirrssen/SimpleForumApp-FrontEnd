@@ -100,9 +100,6 @@
     }
 
     function closeMenuOnClick(event: any) {
-        console.log("Inside");
-        
-
         if (event.relatedTarget && event.relatedTarget.classList[0] === 'app-menu') {
             setTimeout(() => {
                 event.target.focus();

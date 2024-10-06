@@ -75,6 +75,7 @@ function ErrorResponseHandler(error: any) {
 async function HandleTokenExpiration(): Promise<void> {
 
     const now = new Date();
+    const route = useRoute();
 
     const refreshTokenExpirationString = localStorage.getItem("refreshTokenExpirationDate");
     const refreshTokenExpirationDate = new Date(refreshTokenExpirationString || "");
@@ -104,11 +105,18 @@ async function HandleTokenExpiration(): Promise<void> {
             }
         }))
     } else {
-        localStorage.removeItem("expirationDate");
-        localStorage.removeItem("refreshTokenExpirationDate");
-        localStorage.removeItem("token");
-        toast.warning("Oturumunuzun süresi dolmuştur. Kaldığınız yerden devam edebilmek için lütfen tekrar oturum açınız.")
-        isLoginDialogVisible.value = true;
+        if (localStorage.getItem("token")?.length === 0 && route.name === 'auth-login' || route.name === 'index') {
+            navigateTo("/auth/login")
+        } else if (localStorage.getItem("token")?.length === 0 && route.name !== 'auth-login' && route.name !== 'index') {
+            return;
+        }
+         else {
+            localStorage.removeItem("expirationDate");
+            localStorage.removeItem("refreshTokenExpirationDate");
+            localStorage.removeItem("token");
+            toast.warning("Oturumunuzun süresi dolmuştur. Kaldığınız yerden devam edebilmek için lütfen tekrar oturum açınız.")
+            isLoginDialogVisible.value = true;
+        }
     }
 
     return Promise.resolve();
@@ -119,6 +127,11 @@ function CheckTokenExpiration(): boolean {
     const now = new Date();
     
     const accessTokenExpirationDateString = localStorage.getItem("expirationDate");
+
+    if (!accessTokenExpirationDateString || (accessTokenExpirationDateString && accessTokenExpirationDateString.length === 0)) {
+        return true;
+    }
+
     const accessTokenExpirationDate = new Date(accessTokenExpirationDateString || "");
 
     return accessTokenExpirationDate < now;
