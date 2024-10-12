@@ -78,6 +78,7 @@
             if (response) {
                 store.getRoles(store.currentUserId);
                 store.getRoleMatchings(store.currentUserId);
+                store.selectedRole = 0;
             }
         })).finally(() => {
             layoutStore.isLoadingVisible = false;

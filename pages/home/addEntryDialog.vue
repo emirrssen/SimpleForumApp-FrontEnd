@@ -27,6 +27,7 @@
 
     function closeDialogOnClick() {
         store.isDialogVisible = false;
+        store.entry = "";
     }
 
     function saveOnClick() {
@@ -36,6 +37,7 @@
             if (response) {
                 homeStore.getAgenda();
                 homeStore.getTitles();
+                store.entry = "";
             }
         })).finally(() => {
             layoutStore.isLoadingVisible = false;
